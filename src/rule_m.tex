@@ -3,8 +3,11 @@
 
 % Packages
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{tikz}
 \usetikzlibrary{arrows,arrows.meta,positioning,calc,petri}
+\usepackage{adjustbox}
+\usepackage{enumitem}
 \usepackage{listings}
 \usepackage[ruled,vlined]{algorithm2e}
 \SetKwRepeat{Do}{do}{until}%
@@ -26,7 +29,7 @@
         \label{algo:rule_m}
         \DontPrintSemicolon
         \LinesNumbered
-        \KwIn{A net $N=\langle P,T,W_\boxminus,W_\boxplus,I \rangle$, initial marking $M_0$ and CTL* formula $\varphi$}
+        \KwIn{A net $N=\langle P,T,\boxminus,\boxplus,I \rangle$, initial marking $M_0$ and CTL* formula $\varphi$}
         \KwOut{A reduced net $N'$ and its initial marking $M_0'$}
         \vspace{1mm}
         $S_\leq:=P$\tcc*{Places that cannot gain tokens}
@@ -34,7 +37,7 @@
         $F:=T$\tcc*{Transitions that cannot fire}
         \Do{$S_\leq$, $S_\geq$, and $F$ do not change}{
             \tcc*{Find transitions that may fire and update sets accordingly}
-            \ForEach{$t\in F$ where $\forall p\in P.(W_\boxminus(p,t)\leq M_0(p)\lor p\notin S_\leq)\land(I(p,t)>M_0(p)\lor p\notin S_\geq)$}{
+            \ForEach{$t\in F$ where $\forall p\in P.(\boxminus(p,t)\leq M_0(p)\lor p\notin S_\leq)\land(I(p,t)>M_0(p)\lor p\notin S_\geq)$}{
                 $F:=F\setminus\{t\}$\;
                 $S_\leq:=S_\leq\setminus t^\boxplus$\;
                 $S_\geq:=S_\geq\setminus {}^\boxminus t$\;
@@ -42,7 +45,7 @@
         }
         $P':=P\setminus(S_\leq\cap S_\geq\setminus places(\varphi))$\;
         $T':=T\setminus F$\;
-        \KwRet{$N'=\langle P', T', W_\boxminus, W_\boxplus, I\rangle$ and $M_0$}
+        \KwRet{$N'=\langle P', T', \boxminus, \boxplus, I\rangle$ and $M_0$}
         \vspace{0.2cm}
     \end{algorithm}
 
