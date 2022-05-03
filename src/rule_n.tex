@@ -1,0 +1,95 @@
+\section*{Rule N: Redundant arc removal}\label{sec:rule_n}
+The lower bound number of tokens at a place $p_0$ is given by the minimum of the initial marking
+and the number of tokens returned by any consuming transition with a negative effect on $p_0$.
+Using the lower bound we can then find transitions, which are never disabled by $p_0$ and
+remove the transition's dependency on $p_0$, since it is unnecessary,
+as long as we maintain the effect of firing the transition.
+
+\begin{figure}[h!]
+    \begin{tikzpicture}
+        % Left side places
+        \node[place,label=right:$p_0$] (place1) at (0,0) {$\geq low$};
+
+        % Left side transition
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=above:$t$] (negTrans1) at (0,2) {};
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=below:$t_0$] (remTrans1) at (0,-2) {};
+
+        % Left side invisible nodes
+        \node (negIn1) at (-1,3) {};
+        \node (negOut1) at (1,3) {};
+        \node (placeIn1) at (-1.5,0) {};
+        \node (remIn1) at (-1,-3) {};
+        \node (remOut1) at (1,-3) {};
+
+        % Left side arcs between transitions and nodes
+        \draw[-latex,thick] (negTrans1) edge[bend right] node[left] {$w_2$} (place1);
+        \draw[-latex,thick] (place1) edge[bend right] node[right] {$w_3$} (negTrans1);
+        \draw[-latex,thick] (place1) edge[bend right] node[left] {$w_1$} (remTrans1);
+        \draw[-latex,thick] (remTrans1) edge[bend right] node[right] {$w_0$} (place1);
+
+        % Left side arcs to/from invisible nodes
+        \draw[-latex,thick] (negIn1) -- (negTrans1);
+        \draw[-latex,thick] (negTrans1) -- (negOut1);
+        \draw[-latex,thick] (placeIn1) -- (place1);
+        \draw[-latex,thick] (remIn1) -- (remTrans1);
+        \draw[-latex,thick] (remTrans1) -- (remOut1);
+
+        % ================== Middle arrow ==================
+        \node (arrow) at (3,0) {\huge$\Rightarrow$};
+        \node[text width=3cm] at (-3, 0) {\textbf{where}\\$w_3>w_2\geq low$\\$w_0 \geq low \geq w_1$};
+        % ==================================================
+
+        % Right side places
+        \node[place,label=right:$p_0$] (place2) at (6,0) {$\geq low$};
+
+        % Right side transitions
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=above:$t$] (negTrans2) at (6,2) {};
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=below:$t_0$] (remTrans2) at (6,-2) {};
+
+        % Right side invisible nodes
+        \node (negIn2) at (5,3) {};
+        \node (negOut2) at (7,3) {};
+        \node (placeIn2) at (4.5,0) {};
+        \node (remIn2) at (5,-3) {};
+        \node (remOut2) at (7,-3) {};
+
+        % Right side arcs between places and transition
+        \draw[-latex,thick] (negTrans2) edge[bend right] node[left] {$w_2$} (place2);
+        \draw[-latex,thick] (place2) edge[bend right] node[right] {$w_3$} (negTrans2);
+        \draw[-latex,thick] (remTrans2) edge[bend right] node[right] {$w_0-w_1$} (place2);
+
+        % Right side arcs to/from invisible nodes
+        \draw[-latex,thick] (negIn2) -- (negTrans2);
+        \draw[-latex,thick] (negTrans2) -- (negOut2);
+        \draw[-latex,thick] (placeIn2) -- (place2);
+        \draw[-latex,thick] (remIn2) -- (remTrans2);
+        \draw[-latex,thick] (remTrans2) -- (remOut2);
+
+    \end{tikzpicture}
+    \vspace{1cm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{70mm}|p{75mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix place $p_0$ and transition $t_0$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[N1)] $t_0\in p_0^\bullet\setminus p_0^\boxminus$
+            \item[N2)] $\boxminus(p_0,t_0)\leq low$
+        \end{itemize}
+        where
+        \begin{itemize}
+            \item[] $low=\min\{M_0(p_0)\}\cup\{\boxplus(p_0, t)\mid t\in p_0^\boxminus\}$
+        \end{itemize} &
+        \begin{itemize}[leftmargin=10mm]
+            \item[UN1)] Set $\boxplus(p_0,t_0):=\boxplus(p_0,t_0)-\boxminus(p_0,t_0)$
+            \item[UN2)] Set $\boxminus(p_0,t_0):=0$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule N: Redundant arc removal}
+    \label{fig:rule_n}
+\end{figure}
+
+\begin{theorem}\label{theorem:rule_n}
+    Rule~N in Figure~\ref{fig:rule_n} is correct for CTL*.
+\end{theorem}
