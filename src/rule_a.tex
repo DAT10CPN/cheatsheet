@@ -1,0 +1,110 @@
+\section*{Rule A: Sequential Transition Removal}\label{sec:rule_a}
+Rule~A merges sequential transitions, i.e.\ a transition and another transition that must precede or follow it.
+Rule~A is equivalent to a pre (or post) agglomeration with only on producer (or consumer).
+The two variants of Rule~A can be seen in Figure~\ref{fig:rule_a_pre} and~\ref{fig:rule_a_post}.
+
+\begin{theorem}\label{theorem:rule_a}
+    The two variants of Rule~A in Figure~\ref{fig:rule_a_pre} and \ref{fig:rule_a_post} are both correct for LTL\textbackslash X.
+\end{theorem}
+
+\begin{figure}[h]
+    \begin{tikzpicture}[scale=1.1]
+        %%%% Before =====================================
+        \begin{scope}
+            % Places
+            \node[place,label=right:$p_0$] (p0) at (0, 2) {};
+            \node[place,label=left:$p_1$] (p1) at (-1, -2) {};
+            \node[place,label=right:$p_k$] (pk) at (1, -2) {};
+            \node at (0, -2) {$\cdots$};
+
+            % Transitions
+            \node[transition,fill=black,label=above right:$t_0$] (t0) at (0, 0) {};
+
+            % Invisible transitions
+            \node (p0pre1) at (-1, 3) {};
+            \node (p0pre2) at (1, 3) {};
+            \node (p1pre1) at (-2, -1) {};
+            \node (p1pre2) at (-.1, -1) {};
+            \node (pkpre1) at (.1, -1) {};
+            \node (pkpre2) at (2, -1) {};
+            \node (p1post1) at (-2, -3) {};
+            \node (p1post2) at (-.1, -3) {};
+            \node (pkpost1) at (.1, -3) {};
+            \node (pkpost2) at (2, -3) {};
+
+            % Arcs
+            \draw[-latex,thick] (p0pre1) -- node[left] {$n$} (p0);
+            \draw[-latex,thick] (p0pre2) -- node[right] {$m$} (p0);
+            \draw[-latex,thick] (p0) -- node[right] {$1$} (t0);
+            \draw[-latex,thick] (t0) edge[bend right] node[left] {$w_1$} (p1);
+            \draw[-latex,thick] (t0) edge[bend left] node[right] {$w_k$} (pk);
+            \draw[-latex,thick] (p1pre1) -- (p1);
+            \draw[-latex,thick] (p1pre2) -- (p1);
+            \draw[-latex,thick] (pkpre1) -- (pk);
+            \draw[-latex,thick] (pkpre2) -- (pk);
+            \draw[-latex,thick] (p1) -- (p1post1);
+            \draw[-latex,thick] (p1) -- (p1post2);
+            \draw[-latex,thick] (pk) -- (pkpost1);
+            \draw[-latex,thick] (pk) -- (pkpost2);
+
+        \end{scope}
+
+        %%%% Arrow and conditions =======================
+        \node (arrow) at (3,0) {\huge$\Rightarrow$};
+
+        %%%% After ======================================
+        \begin{scope}[shift={(6,0)}]
+            % Places
+            \node[place,label=left:$p_1$] (p1) at (-1, -2) {};
+            \node[place,label=right:$p_k$] (pk) at (1, -2) {};
+            \node at (0, -2) {$\cdots$};
+
+            % Invisible transitions
+            \node (p0pre1) at (-1, 3) {};
+            \node (p0pre2) at (1, 3) {};
+            \node (p1pre1) at (-2, -1) {};
+            \node (p1pre2) at (-.1, -1) {};
+            \node (pkpre1) at (.1, -1) {};
+            \node (pkpre2) at (2, -1) {};
+            \node (p1post1) at (-2, -3) {};
+            \node (p1post2) at (-.1, -3) {};
+            \node (pkpost1) at (.1, -3) {};
+            \node (pkpost2) at (2, -3) {};
+
+            % Arcs
+            \draw[-latex,thick] (p0pre1) -- node[left] {$n\cdot w_1$} (p1);
+            \draw[-latex,thick] (p0pre1) edge[sloped, above, pos=0.7] node {$n\cdot w_k$} (pk);
+            \draw[-latex,thick] (p0pre2) edge[sloped, above, pos=0.7] node {$m\cdot w_1$} (p1);
+            \draw[-latex,thick] (p0pre2) -- node[right] {$m\cdot w_k$} (pk);
+            \draw[-latex,thick] (p1pre1) -- (p1);
+            \draw[-latex,thick] (p1pre2) -- (p1);
+            \draw[-latex,thick] (pkpre1) -- (pk);
+            \draw[-latex,thick] (pkpre2) -- (pk);
+            \draw[-latex,thick] (p1) -- (p1post1);
+            \draw[-latex,thick] (p1) -- (p1post2);
+            \draw[-latex,thick] (pk) -- (pkpost1);
+            \draw[-latex,thick] (pk) -- (pkpost2);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{1cm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{70mm}|p{62mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix $p_0$ and $t_0$ where $t_0^\bullet=\{p_1,\dotsc,p_k\}$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[A1)] ${}^\bullet t_0=\{p_0\}$ and $\boxminus(p_0, t_0)=1$
+            \item[A2)] $p_0^\bullet=\{t_0\}$ and $p_0\notin\{p_1,\dotsc,p_k\}$
+            \item[A3)] $p_0^\circ=p_1^\circ=\dots=p_k^\circ={}^\circ t_0=\emptyset$
+            \item[A4)] $\{p_0, p_1,\dotsc,p_k\}\cap places(\varphi)=\emptyset$
+        \end{itemize} &
+        \begin{itemize}[leftmargin=10mm]
+            \item[UA1)] For all $p\in\{p_1,\dotsc,p_k\}$ change the initial marking s.t.\ $M_0'(p):=M_0(p)+M_0(p_0)\cdot\boxplus(t_0, p)$
+            \item[UA2)] For all $t\in T\setminus\{t_0\}$ and all $p\in\{p_1,\dotsc,p_k\}$ set $\boxplus'(t,p):=\boxplus(t,p)+\boxplus(t,p_0)\cdot\boxplus(t_0,p)$
+            \item[UA3)] Remove $p_0$ and $t_0$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule A: Sequential transition (post)}
+    \label{fig:rule_a_post}
+\end{figure}
