@@ -8,6 +8,7 @@ The two variants of Rule~A can be seen in Figure~\ref{fig:rule_a_pre} and Figure
 \end{theorem}
 
 \begin{figure}[h]
+    \centering
     \begin{tikzpicture}[scale=1.1]
         %%%% Before =====================================
         \begin{scope}
@@ -54,36 +55,36 @@ The two variants of Rule~A can be seen in Figure~\ref{fig:rule_a_pre} and Figure
 
         %%%% After ======================================
         \begin{scope}[shift={(6,0)}]
-        % Places
-        \node[place,label=left:$p_1$] (p1) at (-1, 2) {};
-        \node[place,label=right:$p_k$] (pk) at (1, 2) {};
-        \node at (0, 2) {$\cdots$};
+            % Places
+            \node[place,label=left:$p_1$] (p1) at (-1, 2) {};
+            \node[place,label=right:$p_k$] (pk) at (1, 2) {};
+            \node at (0, 2) {$\cdots$};
 
-        % Invisible transitions
-        \node (p1pre1) at (-2, 3) {};
-        \node (p1pre2) at (-.1, 3) {};
-        \node (pkpre1) at (.1, 3) {};
-        \node (pkpre2) at (2, 3) {};
-        \node (p1post1) at (-2, 1) {};
-        \node (p1post2) at (-.1, 1) {};
-        \node (pkpost1) at (.1, 1) {};
-        \node (pkpost2) at (2, 1) {};
-        \node (p0post1) at (-1, -3) {};
-        \node (p0post2) at (1, -3) {};
+            % Invisible transitions
+            \node (p1pre1) at (-2, 3) {};
+            \node (p1pre2) at (-.1, 3) {};
+            \node (pkpre1) at (.1, 3) {};
+            \node (pkpre2) at (2, 3) {};
+            \node (p1post1) at (-2, 1) {};
+            \node (p1post2) at (-.1, 1) {};
+            \node (pkpost1) at (.1, 1) {};
+            \node (pkpost2) at (2, 1) {};
+            \node (p0post1) at (-1, -3) {};
+            \node (p0post2) at (1, -3) {};
 
-        % Arcs
-        \draw[-latex,thick] (p1pre1) -- (p1);
-        \draw[-latex,thick] (p1pre2) -- (p1);
-        \draw[-latex,thick] (pkpre1) -- (pk);
-        \draw[-latex,thick] (pkpre2) -- (pk);
-        \draw[-latex,thick] (p1) -- (p1post1);
-        \draw[-latex,thick] (p1) -- (p1post2);
-        \draw[-latex,thick] (pk) -- (pkpost1);
-        \draw[-latex,thick] (pk) -- (pkpost2);
-        \draw[-latex,thick] (p1) -- node[left] {$n\cdot w_1$} (p0post1);
-        \draw[-latex,thick] (p1) edge[sloped, above, pos=0.7] node {$m\cdot w_1$} (p0post2);
-        \draw[-latex,thick] (pk) edge[sloped, above, pos=0.7] node {$n\cdot w_k$} (p0post1);
-        \draw[-latex,thick] (pk) -- node[right] {$m\cdot w_k$} (p0post2);
+            % Arcs
+            \draw[-latex,thick] (p1pre1) -- (p1);
+            \draw[-latex,thick] (p1pre2) -- (p1);
+            \draw[-latex,thick] (pkpre1) -- (pk);
+            \draw[-latex,thick] (pkpre2) -- (pk);
+            \draw[-latex,thick] (p1) -- (p1post1);
+            \draw[-latex,thick] (p1) -- (p1post2);
+            \draw[-latex,thick] (pk) -- (pkpost1);
+            \draw[-latex,thick] (pk) -- (pkpost2);
+            \draw[-latex,thick] (p1) -- node[left] {$n\cdot w_1$} (p0post1);
+            \draw[-latex,thick] (p1) edge[sloped, above, pos=0.7] node {$m\cdot w_1$} (p0post2);
+            \draw[-latex,thick] (pk) edge[sloped, above, pos=0.7] node {$n\cdot w_k$} (p0post1);
+            \draw[-latex,thick] (pk) -- node[right] {$m\cdot w_k$} (p0post2);
         \end{scope}
     \end{tikzpicture}
     \vspace{1cm}
@@ -105,7 +106,7 @@ The two variants of Rule~A can be seen in Figure~\ref{fig:rule_a_pre} and Figure
         \end{itemize} \\ \hline
         \end{tabular}
     \end{adjustbox}
-    \caption{Rule A: Sequential transition (pre)}
+    \caption{Rule A: Sequential transition removal (pre)}
     \label{fig:rule_a_pre}
 \end{figure}
 
@@ -207,6 +208,6 @@ The two variants of Rule~A can be seen in Figure~\ref{fig:rule_a_pre} and Figure
         \end{itemize} \\ \hline
         \end{tabular}
     \end{adjustbox}
-    \caption{Rule A: Sequential transition (post)}
+    \caption{Rule A: Sequential transition removal (post)}
     \label{fig:rule_a_post}
 \end{figure}

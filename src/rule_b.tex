@@ -1,0 +1,168 @@
+\section*{Rule B: Sequential place removal}\label{sec:rule_b}
+Rule~B merges two transitions surrounding a place with no other transitions than the two.
+Rule~B is equivalent to an agglomeration with exactly one producer and one consumer, but allow them to have different weights.
+Hence, there is a pre- and post-agglomeration variant of Rule~B defined in Figure~\ref{fig:rule_b_pre} and Figure~\ref{fig:rule_b_post}, respectively.
+
+\begin{theorem}\label{theorem:rule_b}
+    The two variants of Rule~B in Figure~\ref{fig:rule_b_pre} and Figure~\ref{fig:rule_b_post} are both correct for LTL\textbackslash X.
+\end{theorem}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1.1]
+        %%%% Before =====================================
+        \begin{scope}
+            % Places
+            \node[place,label=right:$p_0$] (p0) at (0, 0) {};
+
+            % Transitions
+            \node[transition,fill=black,label=above:$t_0$] (t0) at (0, 2) {};
+            \node[transition,fill=black,label=below:$t_1$] (t1) at (0, -2) {};
+
+            % Invisible places
+            \node (t0pre1) at (-1, 3) {};
+            \node (t0pre2) at (1, 3) {};
+            \node (t0post1) at (-1, 1.6) {};
+            \node (t0post2) at (1, 1.6) {};
+            \node (t1post1) at (-1, -3) {};
+            \node (t1post2) at (1, -3) {};
+
+            % Arcs
+            \draw[-latex,thick] (t0pre1) -- (t0);
+            \draw[-latex,thick] (t0pre2) -- (t0);
+            \draw[-latex,thick] (t0) -- (t0post1);
+            \draw[-latex,thick] (t0) -- (t0post2);
+            \draw[-latex,thick] (t0) -- node[right] {$k\cdot w$} (p0);
+            \draw[-latex,thick] (p0) -- node[right] {$w$} (t1);
+            \draw[-latex,thick] (t1) -- node[left] {$n$} (t1post1);
+            \draw[-latex,thick] (t1) -- node[right] {$m$} (t1post2);
+        \end{scope}
+
+        %%%% Arrow and conditions =======================
+        \node (arrow) at (3,0) {\huge$\Rightarrow$};
+
+        %%%% After ======================================
+        \begin{scope}[shift={(6,0)},scale=1.2]
+            % Transitions
+            \node[transition,fill=black,label=above:$t_0$] (t0) at (0, 0) {};
+
+            % Invisible places
+            \node (t0pre1) at (-1, 1) {};
+            \node (t0pre2) at (1, 1) {};
+            \node (t0post1) at (-1, -.33) {};
+            \node (t0post2) at (1, -.33) {};
+            \node (t1post1) at (-.8, -1.1) {};
+            \node (t1post2) at (.8, -1.1) {};
+
+            % Arcs
+            \draw[-latex,thick] (t0pre1) -- (t0);
+            \draw[-latex,thick] (t0pre2) -- (t0);
+            \draw[-latex,thick] (t0) -- (t0post1);
+            \draw[-latex,thick] (t0) -- (t0post2);
+            \draw[-latex,thick] (t0) edge[sloped] node[above left] {$k\cdot n$} (t1post1);
+            \draw[-latex,thick] (t0) edge[sloped] node[above right] {$k\cdot m$} (t1post2);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{1cm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{70mm}|p{62mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix $p_0$ and $t_0,t_1$ where $t_0\neq t_1$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[B1)] ${}^\bullet p_0=\{t_0\}, p_0^\bullet=\{t_1\},{}^\bullet t_1=\{p_0\}$
+            \item[B2)] $\boxplus(t_0,p_0)=k\cdot\boxminus(p_0, t_1)$ for $k\geq 1$
+            \item[B3)] $p_0^\circ ={}^\circ t_0={}^\circ t_1=\emptyset$
+            \item[B4)] $p_0\notin places(\varphi)$
+            \item[B5)] $p^\circ =\emptyset$ and $p\notin places(\varphi)$ for all $p\in t_1^\bullet$
+        \end{itemize} &
+        \begin{itemize}[leftmargin=10mm]
+            \item[UB1)] For all $p\in P\setminus\{p_0\}$ set $M_0'(p):=M_0(p)+\lfloor M_0(p_0)/\boxminus(p_0,t_1)\rfloor\cdot\boxplus(t_1,p)$
+            \item[UB2)] For all $p\in P\setminus\{p_0\}$ set $\boxplus'(t_0,p):=\boxplus(t_0,p)+k\cdot\boxplus(t_1,p)$
+            \item[UB3)] Remove $p_0$ and $t_1$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule B: Sequential place removal (pre)}
+    \label{fig:rule_b_pre}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1.1]
+        %%%% Before =====================================
+        \begin{scope}
+            % Places
+            \node[place,label=right:$p_0$] (p0) at (0, 0) {};
+
+            % Transitions
+            \node[transition,fill=black,label=above:$t_0$] (t0) at (0, 2) {};
+            \node[transition,fill=black,label=below:$t_1$] (t1) at (0, -2) {};
+
+            % Invisible places
+            \node (t0pre1) at (-1, 3) {};
+            \node (t0pre2) at (1, 3) {};
+            \node (t1pre1) at (-1.1, -1.5) {};
+            \node (t1pre2) at (1.1, -1.5) {};
+            \node (t1post1) at (-1, -3) {};
+            \node (t1post2) at (1, -3) {};
+
+            % Arcs
+            \draw[-latex,thick] (t0pre1) -- (t0);
+            \draw[-latex,thick] (t0pre2) -- (t0);
+            \draw[-latex,thick] (t0) -- node[right] {$k\cdot w$} (p0);
+            \draw[-latex,thick] (p0) -- node[right] {$w$} (t1);
+            \draw[-latex,thick] (t1pre1) -- node[left] {$w_1$} (t1);
+            \draw[-latex,thick] (t1pre2) -- node[right] {$w_2$} (t1);
+            \draw[-latex,thick] (t1) -- node[left] {$w_3$} (t1post1);
+            \draw[-latex,thick] (t1) -- node[right] {$w_4$} (t1post2);
+        \end{scope}
+
+        %%%% Arrow and conditions =======================
+        \node (arrow) at (3,0) {\huge$\Rightarrow$};
+
+        %%%% After ======================================
+        \begin{scope}[shift={(6,0)},scale=1.2]
+        % Transitions
+        \node[transition,fill=black,label=above:$t_0$] (t0) at (0, 0) {};
+
+        % Invisible places
+        \node (t0pre1) at (-1, 1) {};
+        \node (t0pre2) at (1, 1) {};
+        \node (t1pre1) at (-1.1, .3) {};
+        \node (t1pre2) at (1.1, .3) {};
+        \node (t1post1) at (-.8, -1.1) {};
+        \node (t1post2) at (.8, -1.1) {};
+
+        % Arcs
+        \draw[-latex,thick] (t0pre1) -- (t0);
+        \draw[-latex,thick] (t0pre2) -- (t0);
+        \draw[-latex,thick] (t1pre1) edge[sloped] node[below left] {$k\cdot w_1$} (t0);
+        \draw[-latex,thick] (t1pre2) edge[sloped] node[below right] {$k\cdot w_2$} (t0);
+        \draw[-latex,thick] (t0) edge[sloped] node[above left] {$k\cdot w_3$} (t1post1);
+        \draw[-latex,thick] (t0) edge[sloped] node[above right] {$k\cdot w_4$} (t1post2);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{1cm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{70mm}|p{62mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix $p_0$ and $t_0,t_1$ where $t_0\neq t_1$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[B1)] ${}^\bullet p_0=\{t_0\}, p_0^\bullet=\{t_1\},t_0^\bullet=\{p_0\}$
+            \item[B2)] $\boxplus(t_0,p_0)=k\cdot\boxminus(p_0, t_1)$ for $k\geq 1$
+            \item[B3)] $p_0^\circ ={}^\circ t_0={}^\circ t_1=\emptyset$
+            \item[B4)] $p_0\notin places(\varphi)$ and $M_0(p_0)=0$
+            \item[B5)] $p^\circ =\emptyset$ and $p\notin places(\varphi)$ for all $p\in{}^\bullet t_0$
+        \end{itemize} &
+        \begin{itemize}[leftmargin=10mm]
+            \item[UB1)] For all $p\in P\setminus\{p_0\}$ set $\boxminus'(p,t_0):=\boxminus(p,t_0)+k\cdot\boxminus(p,t_1)$
+            \item[UB2)] For all $p\in P\setminus\{p_0\}$ set $\boxplus'(t_0,p):=\boxplus(t_0,p)+k\cdot\boxplus(t_1,p)$
+            \item[UB3)] Remove $p_0$ and $t_1$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule B: Sequential place removal (post)}
+    \label{fig:rule_b_post}
+\end{figure}
