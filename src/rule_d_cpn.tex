@@ -1,0 +1,141 @@
+\section*{Rule D: Parallel transitions}\label{sec:rule_d_cpn}
+Rule~D handles parallel transitions where the effect of firing one of them is equivalent to firing the other exactly $k$ times.
+In such a case, we remove the transition with higher arc-weights.
+The definition of Rule~D can be seen in Figure~\ref{fig:rule_d_cpn}.
+In precondition D2 states that the valid bindings of the guard $G(t_1)$ must be a subset of the valid bindings of $G(t_2)$,
+i.e.\ $\vec B(t_1)\subseteq\vec B(t_2)$.
+This can be expensive to check depending on the complexity of the guards and the number of variables in the guard.
+A cheap overapproximation is to check whether $G(t_1)=G(t_2)$ or $G(t_2)=\top$ instead.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \begin{scope}
+            % left side Places
+            \node[place, label=left:$p_1$] (place1) at (-1.25,2) {};
+            \node[place, label=right:$p_2$] (place2) at (1.25,2) {};
+            \node[place, label=left:$p_3$] (place3) at (-1.25,-2) {};
+            \node[place, label=right:$p_4$] (place4) at (1.25,-2) {};
+
+            % Left side transitions
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black, label=right:$t_2$] (lTrans2) at (1.25,0) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black, label=left:$t_1$] (lTrans1) at (-1.25,0) {};
+
+            % Left side invisible nodes
+            \node (place1in) at (-2,3) {};
+            \node (place1out) at (-2,1.25) {};
+            \node (place2in) at (2,3) {};
+            \node (place2out) at (2,1.25) {};
+
+            \node (place3in) at (-2,-1.25) {};
+            \node (place3out) at (-2,-2.75) {};
+            \node (place4in) at (2,-1.25) {};
+            \node (place4out) at (2,-2.75) {};
+
+            % Left side arcs between transitions and places
+            \draw[-latex,thick] (place1) to node[left] {$W_1 \cdot k$} (lTrans1);
+            \draw[-latex,thick] (place1) to node[sloped, above, pos=0.15] {$W_1$} (lTrans2);
+            \draw[-latex,thick] (place2) to node[sloped, above, pos=0.25] {$W_2 \cdot k$} (lTrans1);
+            \draw[-latex,thick] (place2) to node[right] {$W_2$} (lTrans2);
+
+            \draw[-latex,thick] (lTrans1) to node[left] {$W_3 \cdot k$} (place3);
+            \draw[-latex,thick] (lTrans1) to node[sloped, above, pos=0.25] {$W_4 \cdot k$} (place4);
+            \draw[-latex,thick] (lTrans2) to node[sloped, above, pos=0.15] {$W_3$} (place3);
+            \draw[-latex,thick] (lTrans2) to node[right] {$W_4$} (place4);
+
+
+            % Left side arcs to/from invisible nodes
+            \draw[-latex,thick] (place1in) -- node[above] {} (place1);
+            \draw[-latex,thick]  (place1) -- node[below] {} (place1out);
+            \draw[-latex,thick]  (place2in) -- node[below] {} (place2);
+            \draw[-latex,thick]  (place2) -- node[above] {} (place2out);
+
+            \draw[-latex,thick] (place3in) -- node[above] {} (place3);
+            \draw[-latex,thick]  (place3) -- node[below] {} (place3out);
+            \draw[-latex,thick]  (place4in) -- node[below] {} (place4);
+            \draw[-latex,thick]  (place4) -- node[above] {} (place4out);
+        \end{scope}
+        % ================== Middle arrow ==================
+        \node (arrow) at (3,0) {\Large$\Rightarrow$};
+        \node[text width=3.5cm] at (-2,0) {\textbf{where }\\$k\geq 1$};
+        % ==================================================
+        \begin{scope}[shift={(6, 0)}]
+
+
+        % left side Places
+        \node[place, label=left:$p_1$] (place1) at (-1.25,2) {};
+        \node[place, label=right:$p_2$] (place2) at (1.25,2) {};
+        \node[place, label=left:$p_3$] (place3) at (-1.25,-2) {};
+        \node[place, label=right:$p_4$] (place4) at (1.25,-2) {};
+
+        % Left side transitions
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black, label=right:$t_2$] (lTrans2) at (1.25,0) {};
+
+        % Left side invisible nodes
+        \node (place1in) at (-2,3) {};
+        \node (place1out) at (-2,1.25) {};
+        \node (place2in) at (2,3) {};
+        \node (place2out) at (2,1.25) {};
+
+        \node (place3in) at (-2,-1.25) {};
+        \node (place3out) at (-2,-2.75) {};
+        \node (place4in) at (2,-1.25) {};
+        \node (place4out) at (2,-2.75) {};
+
+        % Left side arcs between transitions and places
+        \draw[-latex,thick] (place1) to node[sloped, above, pos=0.5] {$W_1$} (lTrans2);
+        \draw[-latex,thick] (place2) to node[right] {$W_2$} (lTrans2);
+
+        \draw[-latex,thick] (lTrans2) to node[sloped, above, pos=0.5] {$W_3$} (place3);
+        \draw[-latex,thick] (lTrans2) to node[right] {$W_4$} (place4);
+
+
+        % Left side arcs to/from invisible nodes
+        \draw[-latex,thick] (place1in) -- node[above] {} (place1);
+        \draw[-latex,thick]  (place1) -- node[below] {} (place1out);
+        \draw[-latex,thick]  (place2in) -- node[below] {} (place2);
+        \draw[-latex,thick]  (place2) -- node[above] {} (place2out);
+
+        \draw[-latex,thick] (place3in) -- node[above] {} (place3);
+        \draw[-latex,thick]  (place3) -- node[below] {} (place3out);
+        \draw[-latex,thick]  (place4in) -- node[below] {} (place4);
+        \draw[-latex,thick]  (place4) -- node[above] {} (place4out);
+        \end{scope}
+
+    \end{tikzpicture}
+    \vspace{5mm}
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{75mm}|p{45mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix transitions $t_1$ and $t_2$ and $k\in\N$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[D1)] $t_1\notin transitions(\varphi)$
+            \item[D2)] $\vec B(t_1)\subseteq\vec B(t_2)$
+            \item[D3)] $\varphi\in\text{CTL}\lor X\in\varphi\implies k=1$
+            \item[D4)] For all $p\in P$:
+            \begin{itemize}
+                %\item[] $\textbf{Supp}(\boxplus(t,p_1)) = \textbf{Supp}(\boxplus(t,p_2))$
+                \item[] $\boxminus(p, t_1) = \boxminus(p, t_2) \cdot k $
+                \item[] $\boxplus(t_1, p) = \boxplus(t_2, p) \cdot k $
+            \end{itemize}
+            \item[D5)] ${}^\circ t_2\cap t_2^\bullet=\emptyset$
+            \item[D6)] $\forall p \in P.I(p, t_1) \leq I(p, t_2)$
+            \item[D7)] $\varphi\notin Reach\Rightarrow ({}^\bullet t_1\cup t_1^\bullet) \cap (places(\varphi)\cup{}^\bullet transitions(\varphi))=\emptyset$
+        \end{itemize}
+        &
+        \begin{itemize}[leftmargin=12mm]
+            \item[UD1)] remove $t_1$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule D: Parallel transitions}
+    \label{fig:rule_d_cpn}
+\end{figure}
+
+\begin{theorem}
+    Rule~D described in Figure~\ref{fig:rule_d_cpn} is correct for LTL\textbackslash X.
+\end{theorem}
+
+\begin{theorem}
+    Rule~D described in Figure~\ref{fig:rule_d_cpn} is correct for CTL* if $k=1$.
+\end{theorem}
