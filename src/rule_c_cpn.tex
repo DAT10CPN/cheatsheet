@@ -1,0 +1,110 @@
+\section*{Rule C: Parallel Places (CPN)}\label{sec:rule_c_cpn}
+When two places are parallel to each other and one may accumulate tokens, Rule~C will remove it.
+See Figure~\ref{fig:rule_c_cpn}.
+By convention $\min\emptyset=-\infty$ and $\max\emptyset=\infty$.
+The fraction $d$ describes how fast tokens can be consumed from $p_2$ compared to $p_1$,
+while $f$ describes how slow tokens can be fed to $p_2$ compared to $p_1$.
+If $d\leq f$ then $p_2$ is always fed faster than it is emptied compared to $p_1$,
+which means $p_2$ can be removed, since it will always be $p_1$ which is missing tokens and disables their consumers.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        %%% Before
+        \begin{scope}
+            % Places
+            \node[place, label=left:$p_1$] (place1) at (-1,0) {};
+            \node[place, label=left:$p_2$] (place2) at (1,0) {};
+
+            % Transitions
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black] (lTrans1) at (0,2) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black] (lTrans2) at (0,-2) {};
+
+            % Invisible nodes
+            \node (negIn1) at (-1.5,3) {};
+            \node (negOut1) at (-1.5,1.5) {};
+            \node (remIn1) at (-1.5,-1.5) {};
+            \node (remOut1) at (-1.5,-3) {};
+
+            % Arcs between transitions and places
+            \draw[-latex,thick] (lTrans1) to node[left] {$w_1{}'x$} (place1);
+            \draw[-latex,thick] (lTrans1) to node[right] {$w_3{}'x$} (place2);
+            \draw[-latex,thick] (place1) to node[left] {$w_2{}'y$} (lTrans2);
+            \draw[-latex,thick] (place2) to node[right] {$w_4{}'y$} (lTrans2);
+
+            % Arcs to/from invisible nodes
+            \draw[-latex,thick] (negIn1) -- node[above] {} (lTrans1);
+            \draw[-latex,thick]  (remIn1) -- node[below] {} (lTrans2);
+            \draw[-latex,thick]  (lTrans2) -- node[below] {} (remOut1);
+            \draw[-latex,thick]  (lTrans1) -- node[above] {} (negOut1);
+        \end{scope}
+
+        \node (arrow) at (2.2,0) {\Large$\Rightarrow$};
+        \node[text width=3.5cm] at (-2.5,-0.5) {\textbf{where }\\$\frac{w_4}{w_2}\leq\frac{w_3}{w_1}$};
+
+        \begin{scope}
+            % Places
+            \node[place, label=left:$p_1$] (rplace1) at (4,0) {};
+
+            % Transitions
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black] (rTrans1) at (4,2) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black] (rTrans2) at (4,-2) {};
+
+            % Arcs between transitions and places
+            \draw[-latex,thick] (rTrans1) to node[left] {$w_1{}'x$} (rplace1);
+            \draw[-latex,thick] (rplace1) to node[left] {$w_2{}'y$} (rTrans2);
+
+            % Invisible nodes
+            \node (rnegIn1) at (2.5,3) {};
+            \node (rnegOut1) at (2.5,1.5) {};
+            \node (rremIn1) at (2.5,-1.5) {};
+            \node (rremOut1) at (2.5,-3) {};
+
+            % Arcs to/from invisible nodes
+            \draw[-latex,thick] (rnegIn1) -- node[above] {} (rTrans1);
+            \draw[-latex,thick]  (rremIn1) -- node[below] {} (rTrans2);
+            \draw[-latex,thick]  (rTrans2) -- node[below] {} (rremOut1);
+            \draw[-latex,thick]  (rTrans1) -- node[above] {} (rnegOut1);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{5mm}
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{75mm}|p{45mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix places $p_1$ and $p_2$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[C1)] $\mathcal X(p_1)=\mathcal X(p_2)$
+            \item[C2)] $p_2\notin places(\varphi)$
+            \item[C3)] $p_2^\circ=\emptyset$
+            \item[C4)] $p_1^\bullet\neq\emptyset$
+            \item[C5)] For all $t\in T$:
+
+            $\textbf{Supp}(\boxminus(p_1, t))=\textbf{Supp}(\boxminus(p_2, t))\land$
+
+            $\textbf{Supp}(\boxplus(t, p_1))=\textbf{Supp}(\boxplus(t, p_2))$
+
+            \item[C6)] $\textbf{Supp}(M_0(p_1))=\textbf{Supp}(M_0(p_2))\land$
+
+            $M_0(p_1)\cdot d \subseteq M_0(p_2)$
+            \item[C7)] $d\leq f$
+        \end{itemize}
+        where
+        \[
+            d = \max_{t\in p_1^\bullet,V\in \boxminus(p_1, t)}\frac{\boxminus(p_2, t)(V)}{\boxminus(p_1, t)(V)}
+        \]
+        \[
+            f = \min_{t\in{}^\bullet p_1,V\in \boxplus(t, p_1)}\frac{\boxplus(t, p_2)(V)}{\boxplus(t, p_1)(V)}
+        \]
+        &
+        \begin{itemize}[leftmargin=10mm]
+            \item[UC1)] remove $p_2$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule C: Parallel places (CPN)}
+    \label{fig:rule_c_cpn}
+\end{figure}
+
+\begin{theorem}
+    Rule~C shown in Figure~\ref{fig:rule_c_cpn} are correct for CTL* properties.
+\end{theorem}
