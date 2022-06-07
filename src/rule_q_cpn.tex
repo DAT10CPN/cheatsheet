@@ -1,0 +1,94 @@
+\usepackage{diagbox}\section*{Rule Q: Preemptive transition firing (CPN)}\label{sec:rule_q_cpn}
+Rule~Q, defined in Figure~\ref{fig:rule_q_cpn}, does not reduce the structure of the net,
+but will instead move tokens by simulating firing of transitions.
+\begin{remark}
+    In some nets Rule~Q can be applied indefinitely.
+\end{remark}
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        % left side Places
+        \node[place, label=right:$p_0$] (place0) at (-1,4) {$m_0$};
+        \node[place, label=left:$p_1$] (place1) at (-2,0) {$m_1$};
+        \node[] (empty) at (-1,0) {$\cdots$};
+        \node[place, label=right:$p_2$] (place2) at (0,0) {$m_2$};
+
+        % Left side transitions
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=right:$t_0$] (lTrans1) at (-1,2) {};
+
+        % Left side invisible nodes
+        \node (negIn1) at (-2.5,4) {};
+
+        % Left side arcs between transitions and places
+        \draw[-latex,thick] (place0) -- node[left] {$W$} (lTrans1);
+        \draw[-latex,thick] (lTrans1) -- node [left] {$W$} (place1);
+        \draw[-latex,thick] (lTrans1) -- node [right] {$W$} (place2);
+
+        % Left side arcs to/from invisible nodes
+        \draw[-latex,thick] (negIn1) -- node[above] {} (place0);
+
+        % ================== Middle arrow ==================
+        \node (arrow) at (1.5,2) {\Large$\Rightarrow$};
+        \node[text width=4cm] at (-3.5,2) {\textbf{where }\\$m_3 = m_1 \uplus m_0$\\$m_4 = m_2 \uplus m_0$};
+        % ==================================================
+
+        % right side Places
+        \node[place, label=right:$p_0$] (rplace0) at (4,4) {$\emptyset$};
+        \node[place, label=left:$p_1$] (rplace1) at (3,0) {$m_3$};
+        \node[] (empty) at (4,0) {$\cdots$};
+        \node[place, label=right:$p_2$] (rplace2) at (5,0) {$m_4$};
+
+        % right side transitions
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=right:$t_0$] (rTrans1) at (4,2) {};
+
+        % right side invisible nodes
+        \node (rnegIn1) at (2.5,4) {};
+
+        % Left side arcs between transitions and places
+        \draw[-latex,thick] (rplace0) -- node[left] {$W$} (rTrans1);
+        \draw[-latex,thick] (rTrans1) -- node [left] {$W$} (rplace1);
+        \draw[-latex,thick] (rTrans1) -- node [right] {$W$} (rplace2);
+
+        % Left side arcs to/from invisible nodes
+        \draw[-latex,thick] (rnegIn1) -- node[above] {} (rplace0);
+
+    \end{tikzpicture}
+    \vspace{5mm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{65mm}|p{60mm}|}
+            \hline
+            Precondition & Update \\ \hline
+            Fix place $p_0$ and transition $t_0$ s.t.:
+            \begin{itemize}[leftmargin=10mm]
+                \item[Q1)] $p_0^\bullet = \{t_0\}$ and ${}^\bullet t_0 = \{p_0\}$
+                \item[Q2)] $G(t_0) = \top$
+                \item[Q3)] $(\{p_0\}\cup t^\bullet)\cap places(\varphi)=\emptyset$ and
+
+                $(\{t_0\}\cup (t^\bullet)^\bullet)\cap transitions(\varphi)=\emptyset$
+
+                \item[Q4)] $p_0^\circ=\emptyset$ and $(t_0^\bullet)^\circ=\emptyset$
+                \item[Q5)] ${}^\circ t_0=\emptyset$
+                \item[Q6)] $\exists k\in\N . k\cdot |\boxminus(p_0, t_0)| = |M_0(p_0)|$
+                \item[Q7)] ${}^\bullet p_0\neq\emptyset\implies |\boxminus(p_0, t_0)|=1$
+            \end{itemize}
+            and for all $p\in t_0^\bullet$:
+            \begin{itemize}[leftmargin=10mm]
+                \item[Q8)] $\mathcal X(p) = \mathcal X(p_0) $
+                \item[Q9)] $\boxminus(p_0, t_0) = \boxplus(t_0, p)$
+            \end{itemize}
+            &
+            \begin{itemize}[leftmargin=10mm]
+                \item[UQ1)] $\forall p \in t_0^\bullet . M_0'(p) \coloneqq M_0(p) \uplus M_0(p_0) $
+                \item[UQ2)] $M_0'(p_0):=\emptyset$
+            \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule Q: Preemptive firing}
+    \label{fig:preemptive-firing}
+\end{figure}
+
+\begin{theorem}
+    Rule~Q in Figure~\ref{fig:preemptive-firing} is correct for CTL*\textbackslash X.
+\end{theorem}
