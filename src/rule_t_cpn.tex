@@ -1,0 +1,169 @@
+\section*{Rule T: Pre agglomeration (CPN)}\label{sec:rule_t_cpn}
+Rule~T in Figure~\ref{fig:rule_t_cpn} is a pre agglomeration.
+In a pre agglomeration $h\in{}^\bullet p_0$ is invisible to the query and once enabled, it stays enabled.
+Hence, it can be delayed until an $f\in p_0^\bullet$ needs it.
+Thus Rule~T creates a transition $\langle h f\rangle$ for every pair $h\in{}^\bullet p_0$ and $f\in p_0^\bullet$.
+
+\begin{theorem}
+    Rule~T described in Figure~\ref{fig:rule_t_cpn} is correct for LTL\textbackslash X.
+\end{theorem}
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \tikzstyle{every node}=[font=\small]
+        %%% Before
+        \begin{scope}[scale=0.5]
+            \node[place,label=left:$p_0$] (p0) at (0,0) {};
+            \node (h1pre1) at (-3,6) {};
+            \node (h1pre2) at (-1,6) {};
+            \node (hnpre1) at (1,6) {};
+            \node (hnpre2) at (3,6) {};
+            \node (f1pre) at (-3,-1) {};
+            \node (f1post1) at (-3,-6) {};
+            \node (f1post2) at (-1,-6) {};
+            \node (fmpre) at (3,-1) {};
+            \node (fmpost1) at (1,-6) {};
+            \node (fmpost2) at (3,-6) {};
+            \node (fm) at (2,-3) {};
+
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (-2,3) {};
+            \node (hdots) at (0,3) {$\dots$};
+            \node (fdots) at (0,-3) {$\dots$};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (2,3) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_1$] (f1) at (-2,-3) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+            %\node (fdots) at (-2,-5) {$\dots$};
+            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+
+            \draw[-latex,thick] (h1pre1) edge (h1);
+            \draw[-latex,thick] (h1pre2) edge (h1);
+            \draw[-latex,thick] (hnpre1) edge (hn);
+            \draw[-latex,thick] (hnpre2) edge (hn);
+            \draw[-latex,thick] (h1) edge node[left] {$w{}'x$} (p0);
+            \draw[-latex,thick] (hn) edge node[right] {$w{}'x$} (p0);
+            \draw[-latex,thick] (p0) edge node[left] {$w{}'y$} (f1);
+            \draw[-latex,thick] (p0) edge node[right] {$w{}'y$} (fm);
+            \draw[-latex,thick] (f1pre) edge (f1);
+            \draw[-latex,thick] (f1) edge(f1post1);
+            \draw[-latex,thick] (f1) edge (f1post2);
+            \draw[-latex,thick] (fmpre) edge (fm);
+            \draw[-latex,thick] (fm) edge (fmpost1);
+            \draw[-latex,thick] (fm) edge (fmpost2);
+        \end{scope}
+
+        \node (arrow) at (2,0) {\Large $\Rightarrow$};
+
+        %%% After
+        \begin{scope}[shift={(4,0)},scale=0.6]
+        \node (p1) at (-1,2.5) {};
+        \node (p2) at (0,2.5) {};
+        \node (p9) at (1,2.5) {};
+%            \node (p3) at (1,2.5) {};
+%            \node (p4) at (2,2.5) {};
+%            \node (p10) at (3,2.5) {};
+        \node (p5) at (-0.5,-2.5) {};
+        \node (p6) at (0.5,-2.5) {};
+%            \node (p7) at (1.5,-2.5) {};
+%            \node (p8) at (2.5,-2.5) {};
+
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$\langle h_j f_i \rangle$] (hjfi) at (0,0) {};
+        \node[text width=2.5cm] (explain) at (2,-3.5) {for all $i$ and $j$ s.t. $1\leq j\leq n$\\$1 \leq i\leq m$};
+
+        \draw[-latex,thick] (p1) edge (hjfi);
+        \draw[-latex,thick] (p2) edge (hjfi);
+        \draw[-latex,thick] (p9) edge (hjfi);
+        % \draw[-latex,thick] (p3) edge (hnfm);
+        % \draw[-latex,thick] (p4) edge (hnfm);
+        % \draw[-latex,thick] (p10) edge (hnfm);
+        \draw[-latex,thick] (hjfi) edge (p5);
+        \draw[-latex,thick] (hjfi) edge (p6);
+            % \draw[-latex,thick] (hnfm) edge node[left] {} (p7);
+        \end{scope}
+%        \begin{scope}[shift={(7,0)}, scale=0.5]
+%%            \node[place,label=right:$p_0$] (p0) at (0,0) {};
+%%            \node (h1pre1) at (-3,6) {};
+%%            \node (h1pre2) at (-1,6) {};
+%%            \node (hnpre1) at (1,6) {};
+%%            \node (hnpre2) at (3,6) {};
+%%            %\node (f1pre) at (-3,-1) {};
+%%            %\node (f1post1) at (-3,-6) {};
+%%            %\node (f1post2) at (-1,-6) {};
+%%            \node (fmpre) at (3,-1) {};
+%%            \node (fmpost1) at (1,-6) {};
+%%            \node (fmpost2) at (3,-6) {};
+%%            \node (fm) at (2,-3) {};
+%
+%%            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (-2,3) {};
+%%            \node (hdots) at (0,3) {$\dots$};
+%%            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (2,3) {};
+%            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_0$] (f1) at (-2,-3) {};
+%            %\node (fdots) at (-2,-5) {$\dots$};
+%            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+%
+%            \draw[-latex,thick] (h1pre1) edge (h1);
+%            \draw[-latex,thick] (h1pre2) edge (h1);
+%            \draw[-latex,thick] (hnpre1) edge (hn);
+%            \draw[-latex,thick] (hnpre2) edge (hn);
+%            \draw[-latex,thick] (h1) edge node[left] {$w'x$} (p0);
+%            \draw[-latex,thick] (hn) edge node[right] {$w'x$} (p0);
+%            %\draw[-latex,thick] (p0) edge node[left] {$W$} (f1);
+%            \draw[-latex,thick] (p0) edge node[right] {} (fm);
+%            \draw[-latex,thick] (hjfi) edge node[below] {$((k_j-i)  \cdot  w)'x$} (p0);
+%            %\draw[-latex,thick] (f1pre) edge (f1);
+%            %\draw[-latex,thick] (f1) edge node[left] {} (f1post1);
+%            %\draw[-latex,thick] (f1) edge node[right] {} (f1post2);
+%            %\draw[-latex,thick] (fmpre) edge (fm);
+%            %\draw[-latex,thick] (fm) edge (fmpost1);
+%            %\draw[-latex,thick] (fm) edge (fmpost2);
+%        \end{scope}
+    \end{tikzpicture}
+    \vspace{5mm}
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{70mm}|p{70mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix place $p_0$ s.t.:
+        \begin{itemize}[leftmargin=9mm]
+            \item[T1)] $(\{p_0\} \cap places(\varphi) = \emptyset$
+            \item[T2)] $(p_0^\bullet \cup {}^\bullet p_0) \cap transitions(\varphi) = \emptyset$
+            \item[T3)] $M_0(p_0)=\emptyset$
+            \item[T4)] $^\bullet p_0 \cap p_0^\bullet = \emptyset$
+
+        \end{itemize}
+        \hspace{2mm}
+        and for all $h\in{}^\bullet p_0$:
+        \begin{itemize}[leftmargin=9mm]
+            \item[T5)] $(^\bullet h)^\bullet = \{h\}$
+            \item[T6)] $h^\bullet=\{p_0\}$
+            \item[T7)] ${}^\bullet h \cap places(\varphi) = \emptyset$
+            \item[T8)] $p_0^\circ = {}^\circ h = ({}^\bullet h)^\circ = \emptyset$
+        \end{itemize}
+        \hspace{2mm}
+        and for all $f\in p_0^\bullet$
+        \begin{itemize}[leftmargin=11mm]
+            \item[T9)] $|\textbf{Supp}(\boxplus(h, p_0))| = |\textbf{Supp}(\boxminus(p_0, f))| = 1$
+            \item[T10)] $|\boxplus(h, p_0)| = |\boxminus(p_0,f)|$
+        \end{itemize}
+        &
+        For all $h\in{}^\bullet p$, for all $f\in p^\bullet$:, create a transition $\langle hf\rangle$ s.t. for all $p\in P\setminus\{p_0\}$:
+        \begin{itemize}[leftmargin=10mm]
+            \item[UT1)] For all $v \in Vars(f)$, $rename(f,v,v')$ with some $v' \in Vars_{\mathcal{X}(p)}\backslash Vars(h)$
+            \item[UT2)] $\boxminus(p,\langle hf\rangle)= \boxminus(p,h)\uplus\boxminus(p,f)$
+            \item[UT3)] $\boxplus(\langle hf\rangle,p)= \boxplus(f,p)$
+            \item[UT4)] $G(\langle hf\rangle) = G(h) \land G(f)$
+            \item[UT5)] $I(\langle hf\rangle) = I(f)$
+            %\item[UT6)] Given that $\boxplus(h,p_0) = \{\langle x_1, x_2, \dots, x_n \rangle\}$ and $\boxminus(p_0, f) = \{\langle y_1, y_2, \dots, y_n \rangle\}$, $G(\langle hf \rangle) \land \bigwedge_{i\in[1,n]} (x_i = y_i)$
+            \item[UT6)] Given that $\boxplus(h,p_0) = w{}'\langle x_1, x_2, \dots, x_n \rangle$ and $\boxminus(p_0, f_0) = w{}'\langle y_1, y_2, \dots, y_n \rangle$\newline
+            For $i\in[1,n]$\newline
+            Let $a$ be the minimum value for which $x_a = x_i$ holds:\newline
+            $rename(\langle hf \rangle, x_i, y_a), rename(\langle hf \rangle, y_i, y_a)$
+        \end{itemize}
+        and after all such transitions are made:
+        \begin{itemize}[leftmargin=10mm]
+            \item[UT7)] Remove $p^\bullet$, ${}^\bullet p_0$, and $p_0$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule T: Pre agglomeration}
+    \label{fig:rule_t_cpn}
+\end{figure}

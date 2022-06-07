@@ -7,6 +7,10 @@ Rule~S also handles cases where the producer $h$ produces $k$ times more tokens 
 In this case, a transition $\langle h f_0^i\rangle$ is created for each $i\in [1, k]$.
 Thus all relevant markings remain reachable.
 
+\begin{theorem}
+    Rule~S in Figure~\ref{fig:rule_s_cpn} is correct for reachability without deadlock.
+\end{theorem}
+
 \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -173,7 +177,3 @@ Thus all relevant markings remain reachable.
     \caption{Rule S: Atomic free agglomeration with k-scaled}
     \label{fig:rule_s_cpn}
 \end{figure}
-
-\begin{theorem}
-    Rule~S in Figure~\ref{fig:rule_s_cpn} is correct for reachability without deadlock.
-\end{theorem}
