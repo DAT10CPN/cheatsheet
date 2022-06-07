@@ -1,0 +1,55 @@
+\section*{Rule T: Pre agglomearation}\label{sec:rule_t}
+
+Rule~T in Figure~\ref{fig:rule_t} is a pre agglomeration.
+In a pre agglomeration $h\in{}^\bullet p_0$ is invisible to the query and once enabled, it stays enabled.
+Hence, it can be delayed until an $f\in p_0^\bullet$ needs it.
+Thus Rule~T creates a transition $\langle h f\rangle$ for every pair $h\in{}^\bullet p_0$ and $f\in p_0^\bullet$.
+
+\begin{theorem}
+    Rule~T described in Figure~\ref{fig:rule_t} is correct for \LTLX.
+\end{theorem}
+
+\begin{figure}[h!]
+    \centering
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{75mm}|p{75mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix place $p_0$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[T1)] $(\{p_0\} \cap places(\varphi) = \emptyset$
+            \item[T2)] $(p_0^\bullet \cup {}^\bullet p_0) \cap transitions(\varphi) = \emptyset$
+        \end{itemize}
+        \noindent for all $h\in{}^\bullet p_0$ and $f \in p_0^\bullet$:
+        \begin{itemize}[leftmargin=10mm]
+            \item[T3)] $M_0(p_0) < \boxminus(p_0,f)$
+            \item[T4)] $^\bullet p_0 \cap p_0^\bullet = \emptyset$
+            \item[T5)] $({}^\bullet h)^\bullet = \{h\}$
+            \item[T6)] $h^\bullet=\{p_0\}$
+            \item[T7)] ${}^\bullet h \cap places(\varphi) = \emptyset$
+            \item[T8)] $p_0^\circ = {}^\circ h = ({}^\bullet h)^\circ = \emptyset$
+            \item[T9)] $\boxplus(h, p_0) = \boxminus(p_0,f)$
+        \end{itemize}
+
+        % additionally, for any $k$ that satisfied S8):
+        % \begin{itemize}[leftmargin=10mm]
+        %     \item[S9)] $k > 1 \implies (f_0^\bullet)^\circ = \emptyset$
+        %     \item[S10)] $k > 1 \implies{}^\bullet f_0 = \{p_0\}$
+        % \end{itemize}
+
+        &
+        Create transition $\langle hf\rangle$ for all $h\in{}^\bullet p_0$ and $f\in p_0^\bullet$ s.t.\ for all $p\in P\setminus\{p_0\}$:
+        \begin{itemize}[leftmargin=12mm]
+            \item[UT1)] $\boxminus(p,\langle hf\rangle)=\boxminus(p,h)+\boxminus(p,f)$
+            \item[UT2)] $\boxplus(\langle hf\rangle,p)=\boxplus(f,p)$
+            \item[UT3)] $I(p,\langle hf\rangle) = I(p,f)$
+        \end{itemize}
+        \noindent and
+        \begin{itemize}[leftmargin=12mm]
+            \item[UT4)] Remove ${}^\bullet p_0$, $p_0^\bullet $ and $p_0$
+
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule T: Pre agglomeration}
+    \label{fig:rule_t}
+\end{figure}
