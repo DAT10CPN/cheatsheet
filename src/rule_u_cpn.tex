@@ -101,7 +101,7 @@ See Figure~\ref{fig:rule_u_cpn} for the definition of Rule~U.
         Fix place $p_0$ and transition $f_0$ s.t.:
         \begin{itemize}[leftmargin=10mm]
             \item[U1)] $(\{p_0\} \cap places(\varphi) = \emptyset$
-            \item[U2)] $({}^\bullet p_0 \cup p_0^\bullet \cup ({}^\bullet {}^\bullet p_0)^\bullet) \cap transitions(\varphi) = \emptyset$
+            \item[U2)] $({}^\bullet p_0 \cup p_0^\bullet \cup ({}^\bullet ({}^\bullet p_0)^\bullet)) \cap transitions(\varphi) = \emptyset$
             \item[U3)] $M_0(p_0)=\emptyset$
             \item[U4)] $^\bullet p_0 \cap p_0^\bullet = \emptyset$
             \item[U5)] $f_0 \in p_0^\bullet$
@@ -125,18 +125,19 @@ See Figure~\ref{fig:rule_u_cpn} for the definition of Rule~U.
 %    \end{itemize}
 
         &
-        For all $h\in{}^\bullet p_0$, create a transition $\langle hf\rangle$ s.t. for all $p\in P\setminus\{p_0\}$:
+        For all $h\in{}^\bullet p_0$, create a transition $\langle hf_0\rangle$ s.t.\ for all $p\in P\setminus\{p_0\}$:
         \begin{itemize}[leftmargin=10mm]
-            \item[UU1)] For all $v \in Vars(f_0)$, $rename(f_0,v,v')$ with some $v' \in Var_{\mathcal{X}(p)}\backslash Vars(h)$
-            \item[UU2)] $\boxminus(p,\langle hf\rangle)=\boxminus(p,h)\uplus \boxminus(p,f_0)$
-            \item[UU3)] $\boxplus(\langle hf\rangle,p)=\boxplus(f_0,p)$
-            \item[UU4)] $G(\langle hf\rangle) = G(h) \land G(f_0)$
-            \item[UU5)] $I(\langle hf\rangle) = I(f_0)$
+            \item[UU1)] For all $v \in\textbf{Vars}(f_0)$, $rename(f_0,v,v')$ with some $v' \in\textbf{Var}_{\mathcal{X}(p)}\backslash\textbf{Vars}(h)$
+            \item[UU2)] $\boxminus(p,\langle hf_0\rangle):=\boxminus(p,h)\uplus \boxminus(p,f_0)$
+            \item[UU3)] $\boxplus(\langle hf_0\rangle,p):=\boxplus(f_0,p)$
+            \item[UU4)] $G(\langle hf_0\rangle) := G(h) \land G(f_0)$
+            \item[UU5)] $I(\langle hf_0\rangle) := I(f_0)$
             %\item[UU6)] Given that $\boxplus(h,p_0) = \{\langle x_1, x_2, \dots, x_n \rangle\}$ and $\boxminus(p_0, f_0) = \{\langle y_1, y_2, \dots, y_n \rangle\}$, $G(\langle hf \rangle) \land \bigwedge_{i\in[1,n]} (x_i = y_i)$
             \item[UU6)] Given that $\boxplus(h,p_0) = w{}'\langle x_1, x_2, \dots, x_n \rangle$ and $\boxminus(p_0, f_0) = w{}'\langle y_1, y_2, \dots, y_n \rangle$\newline
             For $i\in[1,n]$\newline
-            Let $a$ be the minimum value for which $x_a = x_i$ holds:\newline
-            $rename(\langle hf \rangle, x_i, y_a), rename(\langle hf \rangle, y_i, y_a)$
+            Let $a$ be the smallest index s.t.\ $x_a = x_i$ holds:
+            $rename(\langle hf_0 \rangle, x_i, y_a)$\newline
+            $rename(\langle hf_0 \rangle, y_i, y_a)$
             %\item[UU-optional)] For every expression of the form $x = y$ in $G(\langle hf \rangle)$, replace all instances of variable $x$ in the arcs and guards of $\langle hf \rangle$ with variable $y$
         \end{itemize}
         and

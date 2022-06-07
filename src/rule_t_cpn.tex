@@ -145,18 +145,19 @@ Thus Rule~T creates a transition $\langle h f\rangle$ for every pair $h\in{}^\bu
             \item[T10)] $|\boxplus(h, p_0)| = |\boxminus(p_0,f)|$
         \end{itemize}
         &
-        For all $h\in{}^\bullet p$, for all $f\in p^\bullet$:, create a transition $\langle hf\rangle$ s.t. for all $p\in P\setminus\{p_0\}$:
+        For all $h\in{}^\bullet p$, for all $f\in p^\bullet$, create a transition $\langle hf\rangle$ s.t.\ for all $p\in P\setminus\{p_0\}$:
         \begin{itemize}[leftmargin=10mm]
-            \item[UT1)] For all $v \in Vars(f)$, $rename(f,v,v')$ with some $v' \in Vars_{\mathcal{X}(p)}\backslash Vars(h)$
-            \item[UT2)] $\boxminus(p,\langle hf\rangle)= \boxminus(p,h)\uplus\boxminus(p,f)$
-            \item[UT3)] $\boxplus(\langle hf\rangle,p)= \boxplus(f,p)$
-            \item[UT4)] $G(\langle hf\rangle) = G(h) \land G(f)$
-            \item[UT5)] $I(\langle hf\rangle) = I(f)$
+            \item[UT1)] For all $v \in\textbf{Vars}(f)$, $rename(f,v,v')$ with some $v' \in\textbf{Vars}_{\mathcal{X}(p)}\backslash\textbf{Vars}(h)$
+            \item[UT2)] $\boxminus(p,\langle hf\rangle) := \boxminus(p,h)\uplus\boxminus(p,f)$
+            \item[UT3)] $\boxplus(\langle hf\rangle,p) := \boxplus(f,p)$
+            \item[UT4)] $G(\langle hf\rangle) := G(h) \land G(f)$
+            \item[UT5)] $I(\langle hf\rangle) := I(f)$
             %\item[UT6)] Given that $\boxplus(h,p_0) = \{\langle x_1, x_2, \dots, x_n \rangle\}$ and $\boxminus(p_0, f) = \{\langle y_1, y_2, \dots, y_n \rangle\}$, $G(\langle hf \rangle) \land \bigwedge_{i\in[1,n]} (x_i = y_i)$
             \item[UT6)] Given that $\boxplus(h,p_0) = w{}'\langle x_1, x_2, \dots, x_n \rangle$ and $\boxminus(p_0, f_0) = w{}'\langle y_1, y_2, \dots, y_n \rangle$\newline
             For $i\in[1,n]$\newline
-            Let $a$ be the minimum value for which $x_a = x_i$ holds:\newline
-            $rename(\langle hf \rangle, x_i, y_a), rename(\langle hf \rangle, y_i, y_a)$
+            Let $a$ be the smallest index s.t.\ $x_a = x_i$ holds:\newline
+            $rename(\langle hf \rangle, x_i, y_a)$\newline
+            $rename(\langle hf \rangle, y_i, y_a)$
         \end{itemize}
         and after all such transitions are made:
         \begin{itemize}[leftmargin=10mm]
