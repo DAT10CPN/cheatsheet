@@ -1,0 +1,162 @@
+\section*{Rule S: Atomic free agglomeration}\label{sec:rule_s}
+A free agglomeration is a pre agglomeration, which does not require that the pre set of the preset of $p_0$ has a single consumer.
+In turn, it is only correct for reachability with deadlocks.
+The atomic free agglomeration is similar to the free agglomeration, but is able to agglomeration one consumer at a time.
+See Figure~\ref{fig:rule_s} for its definition.
+Rule~S also handles cases where the producer $h$ produces $k$ times more tokens than what the consumer $f_0$ consumes.
+In this case, a transition $\langle h f_0^i\rangle$ is created for each $i\in [1, k]$.
+Thus all relevant markings remain reachable.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \tikzstyle{every node}=[font=\small]
+        %%% Before
+        \begin{scope}[scale=0.5]
+            \node[place,label=left:$p_0$] (p0) at (0,0) {};
+            \node (h1pre1) at (-3,6) {};
+            \node (h1pre2) at (-1,6) {};
+            \node (hnpre1) at (1,6) {};
+            \node (hnpre2) at (3,6) {};
+            \node (f1pre) at (-2,-.6) {};
+            \node (f1post1) at (-3,-6) {};
+            \node (f1post2) at (-1,-6) {};
+            \node (fmpre) at (3,-1) {};
+            \node (fmpost1) at (1,-6) {};
+            \node (fmpost2) at (3,-6) {};
+            \node (fm) at (2,-3) {};
+
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (-2,3) {};
+            \node (hdots) at (0,3) {$\dots$};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (2,3) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_0$] (f1) at (-2,-3) {};
+            %\node (fdots) at (-2,-5) {$\dots$};
+            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+
+            \draw[-latex,thick] (h1pre1) edge (h1);
+            \draw[-latex,thick] (h1pre2) edge (h1);
+            \draw[-latex,thick] (hnpre1) edge (hn);
+            \draw[-latex,thick] (hnpre2) edge (hn);
+            \draw[-latex,thick] (h1) edge node[left] {$k_1 \cdot w$} (p0);
+            \draw[-latex,thick] (hn) edge node[right] {$k_n \cdot w$} (p0);
+            \draw[-latex,thick] (p0) edge node[right] {$w$} (f1);
+            \draw[-latex,thick] (p0) edge node[right] {} (fm);
+            \draw[-latex,thick] (f1pre) edge (f1);
+            \draw[-latex,thick] (f1) edge node[left] {$u$} (f1post1);
+            \draw[-latex,thick] (f1) edge node[right] {$v$} (f1post2);
+            %\draw[-latex,thick] (fmpre) edge (fm);
+            %\draw[-latex,thick] (fm) edge (fmpost1);
+            %\draw[-latex,thick] (fm) edge (fmpost2);
+        \end{scope}
+
+        \node (arrow) at (2,0) {\Large $\Rightarrow$};
+
+        %%% After
+        \begin{scope}[shift={(3,0)},scale=0.6]
+        \node (p11) at (2.5,2) {};
+        \node (p12) at (1.5,2) {};
+        \node (p13) at (0.5,2) {};
+        \node (p14) at (1,-2) {};
+        \node (p15) at (2,-2) {};
+
+        \node[text width=2.5cm] (explain) at (4,-3.5) {for all $i$ and $j$ s.t. $1\leq j\leq n$\\$1 \leq i\leq k_j$};
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$\langle h_j f_0^{i}\rangle$] (hnfmk) at (1.5,0) {};
+
+        \draw[-latex,thick] (hnfmk) edge node[left] {$i \cdot u$} (p14);
+        \draw[-latex,thick] (hnfmk) edge node[right] {$i \cdot v$} (p15);
+        \draw[-latex,thick] (p11) edge (hnfmk);
+        \draw[-latex,thick] (p12) edge (hnfmk);
+        \draw[-latex,thick] (p13) edge (hnfmk);
+
+        \end{scope}
+        \begin{scope}[shift={(7,0)}, scale=0.5]
+        \node[place,label=right:$p_0$] (p0) at (0,0) {};
+        \node (h1pre1) at (-3,6) {};
+        \node (h1pre2) at (-1,6) {};
+        \node (hnpre1) at (1,6) {};
+        \node (hnpre2) at (3,6) {};
+        %\node (f1pre) at (-3,-1) {};
+        %\node (f1post1) at (-3,-6) {};
+        %\node (f1post2) at (-1,-6) {};
+        \node (fmpre) at (3,-1) {};
+        \node (fmpost1) at (1,-6) {};
+        \node (fmpost2) at (3,-6) {};
+        \node (fm) at (2,-3) {};
+
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (-2,3) {};
+        \node (hdots) at (0,3) {$\dots$};
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (2,3) {};
+        %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_0$] (f1) at (-2,-3) {};
+        %\node (fdots) at (-2,-5) {$\dots$};
+        %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+
+        \draw[-latex,thick] (h1pre1) edge (h1);
+        \draw[-latex,thick] (h1pre2) edge (h1);
+        \draw[-latex,thick] (hnpre1) edge (hn);
+        \draw[-latex,thick] (hnpre2) edge (hn);
+        \draw[-latex,thick] (h1) edge node[left] {$k_1\cdot w$} (p0);
+        \draw[-latex,thick] (hn) edge node[right] {$k_n\cdot w$} (p0);
+        %\draw[-latex,thick] (p0) edge node[left] {$W$} (f1);
+        \draw[-latex,thick] (p0) edge node[right] {} (fm);
+        \draw[-latex,thick] (hnfmk) edge node[below] {$(k_j-i)\cdot w$} (p0);
+            %\draw[-latex,thick] (f1pre) edge (f1);
+            %\draw[-latex,thick] (f1) edge node[left] {} (f1post1);
+            %\draw[-latex,thick] (f1) edge node[right] {} (f1post2);
+            %\draw[-latex,thick] (fmpre) edge (fm);
+            %\draw[-latex,thick] (fm) edge (fmpost1);
+            %\draw[-latex,thick] (fm) edge (fmpost2);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{5mm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{75mm}|p{75mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix place $p_0$ and transition $f_0$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[S1)] $\{p_0\} \cap places(\varphi) = \emptyset$
+            \item[S2)] $(f_0 \cup {}^\bullet p_0) \cap transitions(\varphi) = \emptyset$
+            \item[S3)] $M_0(p_0) < \boxminus(p_0,f_0)$
+            \item[S4)] $^\bullet p_0 \cap p_0^\bullet = \emptyset$
+            \item[S5)] $f_0 \in p_0^\bullet$
+        \end{itemize}
+        \hspace{2mm}
+        \noindent and for all $h\in{}^\bullet p_0$ there exists a $k\in\N$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[S6)] $h^\bullet=\{p_0\}$
+            \item[S7)] ${}^\bullet h \cap places(\varphi) = \emptyset$
+            \item[S8)] $p_0^\circ = {}^\circ h = ({}^\bullet h)^\circ = \emptyset$
+            \item[S9)] $\boxplus(h, p_0) = k\cdot\boxminus(p_0,f_0)$
+            \item[S10)] $k > 1 \implies (f_0^\bullet)^\circ = \emptyset$
+            \item[S11)] $k > 1 \implies{}^\bullet f_0 = \{p_0\}$
+        \end{itemize}
+        \hspace{2mm}
+
+        &
+        Create transition $\langle hf_0^i\rangle$ for all $i \in [1, k]$, for $k = \boxplus(h,p_0)/\boxminus(p_0,f_0)$, for all $h\in{}^\bullet p_0$.
+        For each such transition:
+        \begin{itemize}[leftmargin=12mm]
+            \item[US1)] $\boxplus(\langle hf_0^i\rangle,p_0)=\boxplus(h,p_0) - i\cdot\boxminus(p,f_0)$
+        \end{itemize}
+        \hspace{2mm}
+        \noindent and for all $p\in P\setminus\{p_0\}$:
+        \begin{itemize}[leftmargin=12mm]
+            \item[US2)] $\boxminus(p,\langle hf_0^i\rangle)=\boxminus(p,h)\uplus\boxminus(p,f_0)$
+            \item[US3)] $\boxplus(\langle hf_0^i\rangle,p)=i\cdot\boxplus(f_0,p)$
+            \item[US4)] $I(p,\langle hf_0^i\rangle) = I(p,f_0)$
+        \end{itemize}
+        \hspace{2mm}
+        \noindent and
+        \begin{itemize}[leftmargin=12mm]
+            \item[US5)] Remove $f_0$
+            \item[US6)] If $p_0^\bullet = \emptyset$, remove $p_0$ and all transitions in ${}^\bullet p_0\setminus transitions(\varphi)$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule S: Atomic free agglomeration}
+    \label{fig:rule_s}
+\end{figure}
+
+\begin{theorem}
+    Rule~S shown in Figure~\ref{fig:rule_s} is correct for deadlock-insensitive reachability properties.
+\end{theorem}
