@@ -1,0 +1,75 @@
+\section*{Rule E: Dead transitions}\label{sec:rule_e_cpn}
+
+Rule~E in Figure~\ref{fig:rule_e_cpn} removes transitions that are never enabled.
+If too many bindings exists to check E1, then checking the cardinalities is a valid overapproximation.
+
+Precondition E3 can be ignored $\varphi$ if all instances of $en(t_0)$ are replaced with $\neg\top$ instead in the update.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        % left side Places
+        \node[place, label=left:$p_0$] (place1) at (0,0) {$m$};
+
+        % Left side transitions
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=right:$t_0$] (lTrans1) at (0,2) {};
+
+        % Left side invisible nodes
+        \node (negIn1) at (-1.5,3) {};
+        \node (negOut1) at (-1.5,1.5) {};
+        \node (remIn1) at (-1.5,-1.5) {};
+        \node (negOut2) at (1,-1.5) {};
+
+        % Left side arcs between transitions and places
+        \draw[-latex,thick] (lTrans1) edge [bend right] node [left] {$W_1$} (place1);
+        \draw[-latex,thick] (place1) edge [bend right] node [right] {$W_2$} (lTrans1);
+
+        % Left side arcs to/from invisible nodes
+        \draw[-latex,thick] (negIn1) -- node[above] {} (lTrans1);
+        \draw[-latex,thick]  (lTrans1) -- node[above] {} (negOut1);
+        \draw[-latex,thick]  (place1) -- node[above] {} (negOut2);
+
+        % ================== Middle arrow ==================
+        \node (arrow) at (2,0) {\Large$\Rightarrow$};
+        \node[text width=4cm] at (-3.5,0) {\textbf{where }\\$\forall b\in B(t_0).b(W_2)\subseteq m$};
+        % ==================================================
+
+        % right side transitions
+        \node[place, label=left:$p_0$] (rplace1) at (4,0) {$m$};
+
+        % right side invisible nodes
+        \node (rnegIn1) at (2.5,3) {};
+        \node (rnegOut1) at (2.5,1.5) {};
+        \node (rremIn1) at (2.5,-1.5) {};
+        \node (rremOut1) at (5,-1.5) {};
+
+        % right side arcs to/from invisible nodes
+        %\draw[-latex,thick] (rremIn1) -- node[above] {} (rplace1);
+        \draw[-latex,thick] (rplace1) -- node[above] {} (rremOut1);
+
+    \end{tikzpicture}
+    \vspace{5mm}
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{65mm}|p{45mm}|}
+            \hline
+            Precondition & Update \\ \hline
+            Fix place $p_0$ and transition $t_0$ s.t.:
+            \begin{itemize}[leftmargin=10mm]
+                \item[E1)] $\forall b\in B(t) . b(\boxminus(p_0,t_0))\not\subseteq M_0(p_0)$
+                \item[E2)] $\forall t \in {}^\bullet p_0: \boxplus(t, p_0) \subseteq \boxminus(p_0,t)$ or $\forall b\in B(t) . b(\boxminus(p_0,t))\not\subseteq M_0(p_0)$
+                \item[E3)] $t_0\notin transitions(\varphi)$
+            \end{itemize}
+            &
+            \begin{itemize}[leftmargin=10mm]
+                \item[UE1)] If $p_0 \not \in places(\varphi)$ and $p_0^\bullet = \{t_0\}$, remove $p_0$
+                \item[UE2)] Remove $t_0$
+            \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule E: Dead transitions}
+    \label{fig:rule_e_cpn}
+\end{figure}
+
+\begin{theorem}
+    Rule~E in Figure~\ref{fig:rule_e_cpn} is correct for CTL* queries.
+\end{theorem}
