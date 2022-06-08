@@ -1,0 +1,107 @@
+\section*{Rule H: Simple cycle removal (P/T)}\label{sec:rule_h}
+Rule~H in Figure~\ref{fig:rule_h} removes cycles consisting of two places and two transitions.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        %%%% Before =====================================
+        \begin{scope}[scale=1.3]
+            % Places
+            \node[place,label=right:$p_0$] (p0) at (0, 1) {};
+            \node[place,label=right:$p_1$] (p1) at (0, -1) {};
+
+            % Transitions
+            \node[transition,fill=black,label=right:$t_0$] (t0) at (-1, 0) {};
+            \node[transition,fill=black,label=right:$t_1$] (t1) at (1, 0) {};
+
+            % Invisible transitions
+            \node (p0pre1) at (-.8, 1.8) {};
+            \node (p0pre2) at (.8, 1.8) {};
+            \node (p0post1) at (-1, 1.4) {};
+            \node (p0post2) at (1, 1.4) {};
+            \node (p1pre1) at (-.8, -1.8) {};
+            \node (p1pre2) at (.8, -1.8) {};
+            \node (p1post1) at (-1, -1.4) {};
+            \node (p1post2) at (1, -1.4) {};
+
+            % Arcs
+            \draw[-latex,thick] (p0) -- (t0);
+            \draw[-latex,thick] (t0) -- (p1);
+            \draw[-latex,thick] (p1) -- (t1);
+            \draw[-latex,thick] (t1) -- (p0);
+            \draw[-latex,thick] (p0pre1) -- (p0);
+            \draw[-latex,thick] (p0pre2) -- (p0);
+            \draw[-latex,thick] (p0) -- (p0post1);
+            \draw[-latex,thick] (p0) -- (p0post2);
+            \draw[-latex,thick] (p1pre1) -- (p1);
+            \draw[-latex,thick] (p1pre2) -- (p1);
+            \draw[-latex,thick] (p1) -- (p1post1);
+            \draw[-latex,thick] (p1) -- (p1post2);
+        \end{scope}
+
+        %%%% Arrow and conditions =======================
+        \node (arrow) at (3.3,0) {\huge$\Rightarrow$};
+
+        %%%% After ======================================
+        \begin{scope}[shift={(6,0)},scale=1.3]
+            % Places
+            \node[place,label=right:$p_1$] (p1) at (0, 0) {};
+
+            % Transitions
+            \node[transition,fill=black,label=right:$t_1$] (t1) at (0, 1.1) {};
+
+            % Invisible transitions
+            \node (p1pre1) at (-.8, .8) {};
+            \node (p1pre2) at (.8, .8) {};
+            \node (p1pre3) at (-.8, -.8) {};
+            \node (p1pre4) at (.8, -.8) {};
+            \node (p1post1) at (-1, .4) {};
+            \node (p1post2) at (1, .4) {};
+            \node (p1post3) at (-1, -.4) {};
+            \node (p1post4) at (1, -.4) {};
+
+            % Arcs
+            \draw[-latex,thick] (p1) edge[bend right] (t1);
+            \draw[-latex,thick] (t1) edge[bend right] (p1);
+            \draw[-latex,thick] (p1pre1) -- (p1);
+            \draw[-latex,thick] (p1pre2) -- (p1);
+            \draw[-latex,thick] (p1pre3) -- (p1);
+            \draw[-latex,thick] (p1pre4) -- (p1);
+            \draw[-latex,thick] (p1) -- (p1post1);
+            \draw[-latex,thick] (p1) -- (p1post2);
+            \draw[-latex,thick] (p1) -- (p1post3);
+            \draw[-latex,thick] (p1) -- (p1post4);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{4mm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{63mm}|p{60mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix different $p_0,p_1,t_0,t_1$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[H1)] ${}^\bullet t_0 = t_1^\bullet =\{p_0\}$
+            \item[H2)] ${}^\bullet t_1 = t_0^\bullet =\{p_1\}$
+            \item[H3)] $p_0^\circ = p_1^\circ = {}^\circ t_0 = {}^\circ t_1 = \emptyset$'
+            \item[H4)] $p_0\notin places(\varphi),p_1\notin places(\varphi)$
+            \item[H5)] $\boxminus(p_0, t_0)=\boxplus(t_0, p_1)=$\newline$\boxminus(p_1, t_1)=\boxplus(t_1, p_1)=1$
+        \end{itemize}
+        &
+        \begin{itemize}[leftmargin=10mm]
+            \item[UH1)] For all $t\in T$:\newline
+                $\boxplus'(t,p_1)=\boxplus(t,p_1)+\boxplus(t,p_2)$\newline
+                $\boxminus'(p_1,t)=\boxplus(p_1,t)+\boxplus(p_2,t)$
+            \item[UH2)] $\boxplus(t_1,p_1)=\boxminus(p_1,t_1)=1$
+            \item[UH3)] $M_0'(p_1)=M_0(p_1)+M_0(p_0)$
+            \item[UH4)] Remove $t_0$
+            \item[UH5)] Remove $p_0$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule H: Simple cycle removal}
+    \label{fig:rule_h}
+\end{figure}
+
+\begin{theorem}\label{theorem:rule_h}
+    Rule~H in Figure~\ref{fig:rule_h} is correct for reachability cardinality queries.
+\end{theorem}
