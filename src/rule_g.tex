@@ -1,0 +1,88 @@
+\section*{Rule G: Redundant transition removal (P/T)}\label{sec:rule_g}
+Rule~G removes transitions that only remove tokens and thus disable behaviour.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        %%%% Before =====================================
+        \begin{scope}
+            % Places
+            \node[place,label=right:$p$] (p) at (0, 1) {};
+
+            % Transitions
+            \node[transition,fill=black,label=right:$t_0$] (t0) at (0, -1) {};
+
+            % Invisible places
+            \node (t0pre1) at (-1, -2) {};
+            \node (t0pre2) at (-.5, -2.3) {};
+            \node (t0post1) at (.5, -2.3) {};
+            \node (t0post2) at (1, -2) {};
+
+            % Invisible transitions
+            \node (ppre1) at (-1, 2) {};
+            \node (ppre2) at (-.5, 2.3) {};
+            \node (ppost1) at (.5, 2.3) {};
+            \node (ppost2) at (1, 2) {};
+
+            % Arcs
+            \draw[-latex,thick] (p) edge[bend right] node[left] {$\geq w$} (t0);
+            \draw[-latex,thick] (t0) edge[bend right] node[right] {$w$} (p);
+            \draw[-latex,thick] (ppre1) -- (p);
+            \draw[-latex,thick] (ppre2) -- (p);
+            \draw[-latex,thick] (p) -- (ppost1);
+            \draw[-latex,thick] (p) -- (ppost2);
+            \draw[-latex,thick] (t0pre1) -- (t0);
+            \draw[-latex,thick] (t0pre2) -- (t0);
+            \draw[-latex,thick] (t0) -- (t0post1);
+            \draw[-latex,thick] (t0) -- (t0post2);
+        \end{scope}
+
+        %%%% Arrow and conditions =======================
+        \node (arrow) at (3,0) {\huge$\Rightarrow$};
+
+        %%%% After ======================================
+        \begin{scope}[shift={(6,0)}]
+            % Places
+            \node[place,label=right:$p$] (p) at (0, 0) {};
+
+            % Invisible transitions
+            \node (ppre1) at (-1, 1) {};
+            \node (ppre2) at (-.5, 1.3) {};
+            \node (ppost1) at (.5, 1.3) {};
+            \node (ppost2) at (1, 1) {};
+
+            % Arcs
+            \draw[-latex,thick] (ppre1) -- (p);
+            \draw[-latex,thick] (ppre2) -- (p);
+            \draw[-latex,thick] (p) -- (ppost1);
+            \draw[-latex,thick] (p) -- (ppost2);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{4mm}
+
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{76mm}|p{40mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix transition $t_0$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[G1)] ${}^\circ t_0=\emptyset$ and $p^\circ$ for all $p\in{}^\bullet t_0$
+            \item[G2)] $t_0^\bullet\supseteq{}^\bullet t_0$
+            \item[G2)] For all $p\in{}^\bullet t_0$ we have either
+            \begin{itemize}[leftmargin=3mm]
+                \item $\boxminus(p, t_0)=\boxplus(t_0, p)$, or
+                \item $\boxminus(p, t_0)>\boxplus(t_0, p)$ and $p\notin places(\varphi)$
+            \end{itemize}
+        \end{itemize}
+        &
+        \begin{itemize}[leftmargin=10mm]
+            \item[UG1)] Removes $t_0$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule G: Redundant transition removel}
+    \label{fig:rule_g}
+\end{figure}
+
+\begin{theorem}\label{theorem:rule_g}
+    Rule~G in Figure~\ref{fig:rule_g} is correct for reachability cardinality queries.
+\end{theorem}
