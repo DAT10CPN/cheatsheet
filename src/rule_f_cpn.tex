@@ -1,0 +1,74 @@
+\section*{Rule F: Redundant place removal (CPN)}\label{sec:rule_f_cpn}
+
+Rule~F in Figure~\ref{fig:rule_f_cpn} removes places which never disables its consumers.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        % left side Places
+        \node[place, label=left:$p_0$] (place1) at (0,0) {$m$};
+
+        % Left side transitions
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=right:$t_0$] (lTrans1) at (0,2) {};
+
+        % Left side invisible nodes
+        \node (negIn1) at (-1.5,3) {};
+        \node (negOut1) at (-1.5,1.5) {};
+        \node (remIn1) at (-1.5,-1.5) {};
+
+        % Left side arcs between transitions and places
+        \draw[-latex,thick] (lTrans1) edge [bend right] node [left] {$W_1$} (place1);
+        \draw[-latex,thick] (place1) edge [bend right] node [right] {$W_2$} (lTrans1);
+
+        % Left side arcs to/from invisible nodes
+        \draw[-latex,thick] (negIn1) -- node[above] {} (lTrans1);
+        \draw[-latex,thick]  (lTrans1) -- node[above] {} (negOut1);
+        \draw[-latex,thick]  (remIn1) -- node[above] {} (place1);
+
+        % ================== Middle arrow ==================
+        \node (arrow) at (2,0) {\Large$\Rightarrow$};
+        \node[text width=4cm] at (-3.5,0) {\textbf{where }\\$W_2\subseteq W_1$\\$\forall b\in B(t_0).b(W_2)\subseteq m$};
+        % ==================================================
+
+        % right side transitions
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=right:$t_0$] (rTrans1) at (4,2) {};
+
+        % right side invisible nodes
+        \node (rnegIn1) at (2.5,3) {};
+        \node (rnegOut1) at (2.5,1.5) {};
+        \node (rremIn1) at (2.5,-1.5) {};
+        \node (rremOut1) at (2.5,-3) {};
+
+        % right side arcs to/from invisible nodes
+        \draw[-latex,thick] (rnegIn1) -- node[above] {} (rTrans1);
+        \draw[-latex,thick]  (rTrans1) -- node[above] {} (rnegOut1);
+
+    \end{tikzpicture}
+    \vspace{5mm}
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{65mm}|p{45mm}|}
+            \hline
+            Precondition & Update \\ \hline
+            Fix place $p_0$ s.t.:
+            \begin{itemize}[leftmargin=10mm]
+                \item[F1)] $p_0^\circ = \emptyset$
+                \item[F2)] $p_0 \not \in places(\varphi)$
+            \end{itemize}
+            and for all $t\in p_0^\bullet$:
+            \begin{itemize}[leftmargin=10mm]
+                \item[F3)] $\boxminus(p_0,t)\subseteq \boxplus(t,p_0)$
+                \item[F4)] $\forall b\in B(t) . b(\boxminus(p_0,t))\subseteq M_0(p_0)$
+            \end{itemize}
+            &
+            \begin{itemize}[leftmargin=10mm]
+                \item[UF1)] remove $p_0$
+            \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule F: Redundant places}
+    \label{fig:rule_f_cpn}
+\end{figure}
+
+\begin{theorem}
+    Rule~F in Figure~\ref{fig:rule_f_cpn} is correct for CTL*.
+\end{theorem}

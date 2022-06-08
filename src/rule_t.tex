@@ -1,0 +1,164 @@
+\section*{Rule T: Pre agglomeration (P/T)}\label{sec:rule_t}
+
+Rule~T in Figure~\ref{fig:rule_t} is a pre agglomeration.
+In a pre agglomeration $h\in{}^\bullet p_0$ is invisible to the query and once enabled, it stays enabled.
+Hence, it can be delayed until an $f\in p_0^\bullet$ needs it.
+Thus Rule~T creates a transition $\langle h f\rangle$ for every pair $h\in{}^\bullet p_0$ and $f\in p_0^\bullet$.
+
+\begin{theorem}
+    Rule~T described in Figure~\ref{fig:rule_t} is correct for LTL\textbackslash X.
+\end{theorem}
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \tikzstyle{every node}=[font=\small]
+        %%% Before
+        \begin{scope}[scale=0.5]
+            \node[place,label=left:$p_0$] (p0) at (0,0) {};
+            \node (h1pre1) at (-3,6) {};
+            \node (h1pre2) at (-1,6) {};
+            \node (hnpre1) at (1,6) {};
+            \node (hnpre2) at (3,6) {};
+            \node (f1pre) at (-3,-1) {};
+            \node (f1post1) at (-3,-6) {};
+            \node (f1post2) at (-1,-6) {};
+            \node (fmpre) at (3,-1) {};
+            \node (fmpost1) at (1,-6) {};
+            \node (fmpost2) at (3,-6) {};
+            \node (fm) at (2,-3) {};
+
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (-2,3) {};
+            \node (hdots) at (0,3) {$\dots$};
+            \node (fdots) at (0,-3) {$\dots$};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (2,3) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_1$] (f1) at (-2,-3) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+            %\node (fdots) at (-2,-5) {$\dots$};
+            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+
+            \draw[-latex,thick] (h1pre1) edge (h1);
+            \draw[-latex,thick] (h1pre2) edge (h1);
+            \draw[-latex,thick] (hnpre1) edge (hn);
+            \draw[-latex,thick] (hnpre2) edge (hn);
+            \draw[-latex,thick] (h1) edge node[left] {$w$} (p0);
+            \draw[-latex,thick] (hn) edge node[right] {$w$} (p0);
+            \draw[-latex,thick] (p0) edge node[left] {$w$} (f1);
+            \draw[-latex,thick] (p0) edge node[right] {$w$} (fm);
+            \draw[-latex,thick] (f1pre) edge (f1);
+            \draw[-latex,thick] (f1) edge(f1post1);
+            \draw[-latex,thick] (f1) edge (f1post2);
+            \draw[-latex,thick] (fmpre) edge (fm);
+            \draw[-latex,thick] (fm) edge (fmpost1);
+            \draw[-latex,thick] (fm) edge (fmpost2);
+        \end{scope}
+
+        \node (arrow) at (2,0) {\Large $\Rightarrow$};
+
+        %%% After
+        \begin{scope}[shift={(4,0)},scale=0.6]
+            \node (p1) at (-1,2.5) {};
+            \node (p2) at (0,2.5) {};
+            \node (p9) at (1,2.5) {};
+    %            \node (p3) at (1,2.5) {};
+    %            \node (p4) at (2,2.5) {};
+    %            \node (p10) at (3,2.5) {};
+            \node (p5) at (-0.5,-2.5) {};
+            \node (p6) at (0.5,-2.5) {};
+    %            \node (p7) at (1.5,-2.5) {};
+    %            \node (p8) at (2.5,-2.5) {};
+
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$\langle h_j f_i \rangle$] (hjfi) at (0,0) {};
+            \node[text width=2.5cm] (explain) at (2,-3.5) {for all $i$ and $j$ s.t. $1\leq j\leq n$\\$1 \leq i\leq m$};
+
+            \draw[-latex,thick] (p1) edge (hjfi);
+            \draw[-latex,thick] (p2) edge (hjfi);
+            \draw[-latex,thick] (p9) edge (hjfi);
+            % \draw[-latex,thick] (p3) edge (hnfm);
+            % \draw[-latex,thick] (p4) edge (hnfm);
+            % \draw[-latex,thick] (p10) edge (hnfm);
+            \draw[-latex,thick] (hjfi) edge (p5);
+            \draw[-latex,thick] (hjfi) edge (p6);
+            % \draw[-latex,thick] (hnfm) edge node[left] {} (p7);
+        \end{scope}
+%        \begin{scope}[shift={(7,0)}, scale=0.5]
+%%            \node[place,label=right:$p_0$] (p0) at (0,0) {};
+%%            \node (h1pre1) at (-3,6) {};
+%%            \node (h1pre2) at (-1,6) {};
+%%            \node (hnpre1) at (1,6) {};
+%%            \node (hnpre2) at (3,6) {};
+%%            %\node (f1pre) at (-3,-1) {};
+%%            %\node (f1post1) at (-3,-6) {};
+%%            %\node (f1post2) at (-1,-6) {};
+%%            \node (fmpre) at (3,-1) {};
+%%            \node (fmpost1) at (1,-6) {};
+%%            \node (fmpost2) at (3,-6) {};
+%%            \node (fm) at (2,-3) {};
+%
+%%            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (-2,3) {};
+%%            \node (hdots) at (0,3) {$\dots$};
+%%            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (2,3) {};
+%            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_0$] (f1) at (-2,-3) {};
+%            %\node (fdots) at (-2,-5) {$\dots$};
+%            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+%
+%            \draw[-latex,thick] (h1pre1) edge (h1);
+%            \draw[-latex,thick] (h1pre2) edge (h1);
+%            \draw[-latex,thick] (hnpre1) edge (hn);
+%            \draw[-latex,thick] (hnpre2) edge (hn);
+%            \draw[-latex,thick] (h1) edge node[left] {$w'x$} (p0);
+%            \draw[-latex,thick] (hn) edge node[right] {$w'x$} (p0);
+%            %\draw[-latex,thick] (p0) edge node[left] {$W$} (f1);
+%            \draw[-latex,thick] (p0) edge node[right] {} (fm);
+%            \draw[-latex,thick] (hjfi) edge node[below] {$((k_j-i)  \cdot  w)'x$} (p0);
+%            %\draw[-latex,thick] (f1pre) edge (f1);
+%            %\draw[-latex,thick] (f1) edge node[left] {} (f1post1);
+%            %\draw[-latex,thick] (f1) edge node[right] {} (f1post2);
+%            %\draw[-latex,thick] (fmpre) edge (fm);
+%            %\draw[-latex,thick] (fm) edge (fmpost1);
+%            %\draw[-latex,thick] (fm) edge (fmpost2);
+%        \end{scope}
+    \end{tikzpicture}
+    \vspace{5mm}
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{75mm}|p{75mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix place $p_0$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[T1)] $(\{p_0\} \cap places(\varphi) = \emptyset$
+            \item[T2)] $(p_0^\bullet \cup {}^\bullet p_0) \cap transitions(\varphi) = \emptyset$
+        \end{itemize}
+        \noindent for all $h\in{}^\bullet p_0$ and $f \in p_0^\bullet$:
+        \begin{itemize}[leftmargin=10mm]
+            \item[T3)] $M_0(p_0) < \boxminus(p_0,f)$
+            \item[T4)] $^\bullet p_0 \cap p_0^\bullet = \emptyset$
+            \item[T5)] $({}^\bullet h)^\bullet = \{h\}$
+            \item[T6)] $h^\bullet=\{p_0\}$
+            \item[T7)] ${}^\bullet h \cap places(\varphi) = \emptyset$
+            \item[T8)] $p_0^\circ = {}^\circ h = ({}^\bullet h)^\circ = \emptyset$
+            \item[T9)] $\boxplus(h, p_0) = \boxminus(p_0,f)$
+        \end{itemize}
+
+        % additionally, for any $k$ that satisfied S8):
+        % \begin{itemize}[leftmargin=10mm]
+        %     \item[S9)] $k > 1 \implies (f_0^\bullet)^\circ = \emptyset$
+        %     \item[S10)] $k > 1 \implies{}^\bullet f_0 = \{p_0\}$
+        % \end{itemize}
+
+        &
+        Create transition $\langle hf\rangle$ for all $h\in{}^\bullet p_0$ and $f\in p_0^\bullet$ s.t.\ for all $p\in P\setminus\{p_0\}$:
+        \begin{itemize}[leftmargin=12mm]
+            \item[UT1)] $\boxminus(p,\langle hf\rangle)=\boxminus(p,h)+\boxminus(p,f)$
+            \item[UT2)] $\boxplus(\langle hf\rangle,p)=\boxplus(f,p)$
+            \item[UT3)] $I(p,\langle hf\rangle) = I(p,f)$
+        \end{itemize}
+        \noindent and
+        \begin{itemize}[leftmargin=12mm]
+            \item[UT4)] Remove ${}^\bullet p_0$, $p_0^\bullet $ and $p_0$
+
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule T: Pre agglomeration}
+    \label{fig:rule_t}
+\end{figure}

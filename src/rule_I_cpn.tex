@@ -1,0 +1,35 @@
+\section*{Rule I: Irrelevant places and transitions (CPN)}\label{sec:rule_i_cpn}
+Only some places and transitions are relevant for the query.
+Algorithm~\ref{algo:rule_i_cpn} shows how to remove everything that is irrelevant.
+Note that ${}^\nabla p=\{t\in {}^\bullet p\mid\boxplus(t,p)\neq\boxminus(p,t)\}$ is the transmuting preset of $p\in P$ and
+in line 7 we enqueue ${}^\nabla({}^\bullet t)$ which is the union of the transmuting presets of the places in the preset of $t$.
+
+\begin{algorithm}
+    \vspace{0.2cm}
+    \caption{Rule I: Irrelevant places and transitions}
+    \label{algo:rule_i_cpn}
+    \DontPrintSemicolon
+    \LinesNumbered
+    \KwIn{A CPN $N=\langle P,T,\mathcal X,\boxminus,\boxplus,I,G \rangle$, initial marking $M_0$ and EF formula $\varphi$ without $X$ and \textit{deadlock}}
+    \KwOut{A reduced net $N'$ and its initial marking $M_0'$}
+    \vspace{1mm}
+    $X:=\emptyset$\tcc*{Relevant transitions}
+    $Q:=transitions(\varphi)\cup{}^\bullet places(\varphi)\cup places(\varphi)^\bullet$\tcc*{Queue of transitions}
+    \While{$Q\neq\emptyset$}{
+        Pick any $t\in Q$\;
+        $Q:=Q\setminus\{t\}$\;
+        $X:=X\cup\{t\}$\tcc*{Mark as relevant}
+        $Q:=Q\cup{}^\nabla({}^\bullet t)\setminus X$\tcc*{Enqueue transition that can enable $t$}
+        $Q:=Q\cup({}^\circ t)^\boxminus\setminus X$\;
+    }
+    $P':={}^\bullet X\cup {}^\circ X\cup places(\varphi)$\;
+    $T':=X$\;
+    $N':=$ a copy of $N$ but every place $p\notin P'$ and every transition $t\notin T'$ have been removed.\;
+    $M_0':=$ a marking s.t.\ $M_0'(p)=M_0(p)$ for all $p\in P'$.\;
+    \KwRet{$N'$ and $M_0'$}
+    \vspace{0.2cm}
+\end{algorithm}
+
+\begin{theorem}
+    Rule~I in Algorithm~\ref{algo:rule_i_cpn} is correct for reachability without deadlock.
+\end{theorem}

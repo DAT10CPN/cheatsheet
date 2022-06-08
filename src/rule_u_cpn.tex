@@ -1,0 +1,152 @@
+\section*{Rule U: Atomic free agglomeration (CPN)}\label{sec:rule_u_cpn}
+Rule~U is a atomic free agglomeration similar to Rule~S.
+However, it restricts $k=1$.
+See Figure~\ref{fig:rule_u_cpn} for the definition of Rule~U.
+
+\begin{theorem}
+    Rule~U in Figure~\ref{fig:rule_u_cpn} is correct for reachability without deadlock.
+\end{theorem}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \tikzstyle{every node}=[font=\small]
+        %%% Before
+        \begin{scope}[scale=0.5]
+            \node[place,label=left:$p_0$] (p0) at (0,0) {};
+            \node (h1pre1) at (-3,6) {};
+            \node (h1pre2) at (-1,6) {};
+            \node (hnpre1) at (1,6) {};
+            \node (hnpre2) at (3,6) {};
+            \node (f1pre) at (-4,-2) {};
+            \node (f1post1) at (-3,-6) {};
+            \node (f1post2) at (-1,-6) {};
+            \node (fmpre) at (3,-1) {};
+            \node (fmpost1) at (1,-6) {};
+            \node (fmpost2) at (3,-6) {};
+            \node (fm) at (2,-3) {};
+
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (-2,3) {};
+            \node (hdots) at (0,3) {$\dots$};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (2,3) {};
+            \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_0$] (f1) at (-2,-3) {};
+            %\node (fdots) at (-2,-5) {$\dots$};
+            %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$f_m$] (fm) at (2,-3) {};
+
+            \draw[-latex,thick] (h1pre1) edge (h1);
+            \draw[-latex,thick] (h1pre2) edge (h1);
+            \draw[-latex,thick] (hnpre1) edge (hn);
+            \draw[-latex,thick] (hnpre2) edge (hn);
+            \draw[-latex,thick] (h1) edge node[left] {$w'x$} (p0);
+            \draw[-latex,thick] (hn) edge node[right] {$w'x$} (p0);
+            \draw[-latex,thick] (p0) edge node[left] {$w'y$} (f1);
+            \draw[-latex,thick] (p0) edge node[right] {} (fm);
+            \draw[-latex,thick] (f1pre) edge (f1);
+            \draw[-latex,thick] (f1) edge (f1post1);
+            \draw[-latex,thick] (f1) edge (f1post2);
+            %\draw[-latex,thick] (fmpre) edge (fm);
+            %\draw[-latex,thick] (fm) edge (fmpost1);
+            %\draw[-latex,thick] (fm) edge (fmpost2);
+        \end{scope}
+
+
+        \node (arrow) at (2,0) {\Large $\Rightarrow$};
+
+        %%% After
+        \begin{scope}[shift={(4,0)},scale=0.6]
+
+        \node[place,label=left:$p_0$] (p0) at (4,0) {};
+        \node (h1pre1) at (1,5) {};
+        \node (h1pre2) at (3,5) {};
+        \node (hnpre1) at (5,5) {};
+        \node (hnpre2) at (7,5) {};
+
+
+        \node (p1) at (-1,2.5) {};
+        \node (p2) at (-2,1.5) {};
+        \node (p9) at (1,2.5) {};
+        \node (p5) at (-1,-2.5) {};
+        \node (p6) at (1,-2.5) {};
+
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_1$] (h1) at (2,3) {};
+        \node (hdots) at (0,3) {$\dots$};
+        \node (falt) at (6,-3) {};
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$h_n$] (hn) at (6,3) {};
+        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=left:$\langle h_i f_0 \rangle$] (hjfi) at (0,0) {};
+        \node[text width=2.5cm] (explain) at (2,-3.5) {for all $i$ s.t.\\ $1\leq i\leq n$};
+
+        \draw[-latex,thick] (h1pre1) edge (h1);
+        \draw[-latex,thick] (h1pre2) edge (h1);
+        \draw[-latex,thick] (hnpre1) edge (hn);
+        \draw[-latex,thick] (hnpre2) edge (hn);
+        \draw[-latex,thick] (h1) edge node[left] {$w'x$} (p0);
+        \draw[-latex,thick] (hn) edge node[right] {$w'x$} (p0);
+
+        \draw[-latex,thick] (p1) edge (hjfi);
+        \draw[-latex,thick] (p2) edge (hjfi);
+        \draw[-latex,thick] (p9) edge (hjfi);
+        % \draw[-latex,thick] (p3) edge (hnfm);
+        % \draw[-latex,thick] (p4) edge (hnfm);
+        % \draw[-latex,thick] (p10) edge (hnfm);
+        \draw[-latex,thick] (hjfi) edge (p5);
+        \draw[-latex,thick] (hjfi) edge (p6);
+        \draw[-latex,thick] (p0) edge (falt);
+            % \draw[-latex,thick] (hnfm) edge node[left] {} (p7);
+        \end{scope}
+    \end{tikzpicture}
+    \vspace{5mm}
+    \begin{adjustbox}{center}
+        \begin{tabular}{|p{70mm}|p{70mm}|} \hline
+        Precondition & Update \\ \hline
+        Fix place $p_0$ and transition $f_0$ s.t.:
+        \begin{itemize}[leftmargin=10mm]
+            \item[U1)] $(\{p_0\} \cap places(\varphi) = \emptyset$
+            \item[U2)] $({}^\bullet p_0 \cup p_0^\bullet \cup ({}^\bullet ({}^\bullet p_0)^\bullet)) \cap transitions(\varphi) = \emptyset$
+            \item[U3)] $M_0(p_0)=\emptyset$
+            \item[U4)] $^\bullet p_0 \cap p_0^\bullet = \emptyset$
+            \item[U5)] $f_0 \in p_0^\bullet$
+        \end{itemize}
+        \hspace{2mm}
+        and for all $h\in{}^\bullet p$:
+        \begin{itemize}[leftmargin=10mm]
+            \item[U6)] $|\textbf{Supp}(\boxplus(h, p_0))| = |\textbf{Supp}(\boxminus(p_0, f_0))| = 1$
+            \item[U7)] $h^\bullet=\{p_0\}$
+            \item[U8)] ${}^\bullet h \cap places(\varphi) = \emptyset$
+            \item[U9)] $p_0^\circ = {}^\circ h = ({}^\bullet h)^\circ = \emptyset$
+            \item[U10)] $|\boxplus(h, p_0)| = |\boxminus(p_0, f_0)|$
+            %\item[U10)] $|\boxplus(h, p_0)| = k * |\boxminus(p_0, f_0)|$
+            %\item[U11)] $k > 1 \implies{}^\bullet f_0 = \{p_0\}$
+            %\item[U12)] $k > 1 \implies (f_0^\bullet)^\circ = \emptyset$
+        \end{itemize}
+%    And for each variable $v \in ((\boxplus(h, p_0) \cup \boxminus(p_0, f_0)) \cap (\textbf{Vars}(G(h)) \cup \textbf{Vars}(G(f_0)))$\newline
+%    there exists a $p$ \in P\backslash $\{p_0\}$ such that:
+%    \begin{itemize}[leftmargin=13mm]
+%        \item[U11)] $v \in (\textbf{Vars}(\boxplus(h, p)) \cup \textbf{Vars}(\boxminus(p, f_0)))$
+%    \end{itemize}
+
+        &
+        For all $h\in{}^\bullet p_0$, create a transition $\langle hf_0\rangle$ s.t.\ for all $p\in P\setminus\{p_0\}$:
+        \begin{itemize}[leftmargin=10mm]
+            \item[UU1)] For all $v \in\textbf{Vars}(f_0)$, $rename(f_0,v,v')$ with some $v' \in\textbf{Var}_{\mathcal{X}(p)}\backslash\textbf{Vars}(h)$
+            \item[UU2)] $\boxminus(p,\langle hf_0\rangle):=\boxminus(p,h)\uplus \boxminus(p,f_0)$
+            \item[UU3)] $\boxplus(\langle hf_0\rangle,p):=\boxplus(f_0,p)$
+            \item[UU4)] $G(\langle hf_0\rangle) := G(h) \land G(f_0)$
+            \item[UU5)] $I(\langle hf_0\rangle) := I(f_0)$
+            %\item[UU6)] Given that $\boxplus(h,p_0) = \{\langle x_1, x_2, \dots, x_n \rangle\}$ and $\boxminus(p_0, f_0) = \{\langle y_1, y_2, \dots, y_n \rangle\}$, $G(\langle hf \rangle) \land \bigwedge_{i\in[1,n]} (x_i = y_i)$
+            \item[UU6)] Given that $\boxplus(h,p_0) = w{}'\langle x_1, x_2, \dots, x_n \rangle$ and $\boxminus(p_0, f_0) = w{}'\langle y_1, y_2, \dots, y_n \rangle$\newline
+            For $i\in[1,n]$\newline
+            Let $a$ be the smallest index s.t.\ $x_a = x_i$ holds:
+            $rename(\langle hf_0 \rangle, x_i, y_a)$\newline
+            $rename(\langle hf_0 \rangle, y_i, y_a)$
+            %\item[UU-optional)] For every expression of the form $x = y$ in $G(\langle hf \rangle)$, replace all instances of variable $x$ in the arcs and guards of $\langle hf \rangle$ with variable $y$
+        \end{itemize}
+        and
+        \begin{itemize}[leftmargin=10mm]
+            \item[UU7)] Remove $f_0$
+            \item[UU8)] If $p_0^\bullet = \emptyset$, remove $p_0$ and all transitions in ${}^\bullet p_0\setminus transitions(\varphi)$
+        \end{itemize} \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Rule U: Atomic free agglomeration}
+    \label{fig:rule_u_cpn}
+\end{figure}
