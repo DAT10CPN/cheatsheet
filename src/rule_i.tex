@@ -1,15 +1,16 @@
-\section*{Rule I: Irellevant Net Sections}
+\section*{Rule I: Irrelevant Net Sections}
 Rule~I removes places and transitions that cannot affect reachability.
 It marks places and transitions that appear in the query and their direct consumers as relevant, and then iteratively
 propagates this relevance to all pre sets of relevant places and transitions, and removes everything that does not end
 up being relevant at the end. \\
 Figure~\ref{fig:rule_i} shows an example where the query mentions none of the shown net, but does mention a place that $t_3$ can affect.
 
-\begin{figure}
+\begin{figure}[h]
+    \centering
     \begin{tikzpicture}
         % Left side places
-        \node[place,label=left:$p_0$] (place1) at (0,0) {$\;M_0 \neq 0\;$};
-        \node[place,label=right:$p_1$] (place2) at (2,0) {$\;M_0 = 0\;$};
+        \node[place,label=left:$p_0$] (place1) at (0,0) {};
+        \node[place,label=right:$p_1$, tokens=1] (place2) at (2,0) {};
 
         % Left side transition
         \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=above:$t_0$] (negTrans1) at (-1,2) {};
@@ -29,16 +30,16 @@ Figure~\ref{fig:rule_i} shows an example where the query mentions none of the sh
         \draw[-latex,thick] (negTrans1) edge node[left] {} (place1);
         %\draw[-latex,thick] (place1) edge[bend right] node[right] {$w_3$} (negTrans1);
         %\draw[-latex,thick] (place1) edge[bend right] node[left] {$w_1$} (remTrans1);
-        \draw[-latex,thick] (remTrans1) edge node[right] {} (place1);
+        %\draw[-latex,thick] (remTrans1) edge node[right] {} (place1);
 
         % Left side arcs to/from invisible nodes
         \draw[-latex,thick] (negIn1) -- (negTrans1);
         %\draw[-latex,thick] (negTrans1) -- (negOut1);
         \draw[-latex,thick] (place1) -- (placeIn1);
-        \draw[-latex,thick] (place2) -- (trans3);
+        \draw[-latex,thick] (trans3) -- (place2);
         \draw[-latex,thick] (remTrans1) edge[bend right] node[right] {} (place2);
         \draw[-latex,thick] (place2) edge[bend right] node[below left] {} (remTrans1);
-        \draw[-latex,thick] (trans3) -- (place1);
+        \draw[-latex,thick] (place1) -- (trans3);
         \draw[-latex,thick] (trans4) -- (out4);
 
         % ================== Middle arrow ==================
@@ -48,7 +49,7 @@ Figure~\ref{fig:rule_i} shows an example where the query mentions none of the sh
         % ==================================================
 
         % Left side places
-        \node[place,label=left:$p_0$] (rplace1) at (7,0) {$\;M_0 \neq 0\;$};
+        \node[place,label=left:$p_0$] (rplace1) at (7,0) {};
         %\node[place,label=right:$p_1$] (place2) at (8,0) {$\neg \varphi$};
 
         % Left side transition
@@ -78,5 +79,6 @@ Figure~\ref{fig:rule_i} shows an example where the query mentions none of the sh
         %\draw[-latex,thick] (remTrans1) -- (place2);
         \draw[-latex,thick] (rtrans4) -- (rout4);
     \end{tikzpicture}
+    \caption{Rule I: Irrelevant net sections}
     \label{fig:rule_i}
 \end{figure}
