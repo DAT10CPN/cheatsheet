@@ -1,84 +1,33 @@
-\section*{Rule I: Irrelevant Net Sections}
-Rule~I removes places and transitions that cannot affect reachability.
-It marks places and transitions that appear in the query and their direct consumers as relevant, and then iteratively
-propagates this relevance to all pre sets of relevant places and transitions, and removes everything that does not end
-up being relevant at the end. \\
-Figure~\ref{fig:rule_i} shows an example where the query mentions none of the shown net, but does mention a place that $t_3$ can affect.
+\section*{Rule I: Irrelevant places and transitions (P/T)}\label{sec:rule_i}
+Only some places and transitions are relevant for the query.
+Algorithm~\ref{algo:rule_i} shows how to remove everything that is irrelevant by propagating relevance.
 
-\begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-        % Left side places
-        \node[place,label=left:$p_0$] (place1) at (0,0) {};
-        \node[place,label=right:$p_1$, tokens=1] (place2) at (2,0) {};
+\begin{algorithm}
+    \vspace{0.2cm}
+    \caption{Rule I: Irrelevant places and transitions}
+    \label{algo:rule_i}
+    \DontPrintSemicolon
+    \LinesNumbered
+    \KwIn{A P/T net $N=\langle P,T,\boxminus,\boxplus,I\rangle$, initial marking $M_0$ and reachability formula $\varphi$ without \textit{deadlock}}
+    \KwOut{A reduced net $N'$ and its initial marking $M_0'$}
+    \vspace{1mm}
+    $X:=\emptyset$\tcc*{Relevant transitions}
+    $Q:=transitions(\varphi)\cup{}^\bullet places(\varphi)\cup places(\varphi)^\bullet$\tcc*{Queue of transitions}
+    \While{$Q\neq\emptyset$}{
+        Pick any $t\in Q$\;
+        $Q:=Q\setminus\{t\}$\;
+        $X:=X\cup\{t\}$\tcc*{Mark as relevant}
+        $Q:=Q\cup{}^\boxplus({}^\bullet t)\setminus X$\tcc*{Enqueue transitions that can enable $t$}
+        $Q:=Q\cup({}^\circ t)^\boxminus\setminus X$\;
+    }
+    $P':={}^\bullet X\cup {}^\circ X\cup places(\varphi)$\;
+    $T':=X$\;
+    $N':=$ a copy of $N$ but every place $p\notin P'$ and every transition $t\notin T'$ have been removed.\;
+    $M_0':=$ a marking s.t.\ $M_0'(p)=M_0(p)$ for all $p\in P'$.\;
+    \KwRet{$N'$ and $M_0'$}
+    \vspace{0.2cm}
+\end{algorithm}
 
-        % Left side transition
-        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=above:$t_0$] (negTrans1) at (-1,2) {};
-        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=above:$t_1$] (remTrans1) at (1,2) {};
-        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=below:$t_4$] (trans3) at (1,-2) {};
-        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=below:$t_3$] (trans4) at (-1,-2) {};
-
-        % Left side invisible nodes
-        \node (negIn1) at (-2,2) {};
-        \node (negOut1) at (1,3) {};
-        \node (placeIn1) at (-1,-2) {};
-        %\node (remIn1) at (1,-1) {};
-        %\node (remOut1) at (1,-3) {};
-        \node (out4) at (-2,-2) {};
-
-        % Left side arcs between transitions and nodes
-        \draw[-latex,thick] (negTrans1) edge node[left] {} (place1);
-        %\draw[-latex,thick] (place1) edge[bend right] node[right] {$w_3$} (negTrans1);
-        %\draw[-latex,thick] (place1) edge[bend right] node[left] {$w_1$} (remTrans1);
-        %\draw[-latex,thick] (remTrans1) edge node[right] {} (place1);
-
-        % Left side arcs to/from invisible nodes
-        \draw[-latex,thick] (negIn1) -- (negTrans1);
-        %\draw[-latex,thick] (negTrans1) -- (negOut1);
-        \draw[-latex,thick] (place1) -- (placeIn1);
-        \draw[-latex,thick] (trans3) -- (place2);
-        \draw[-latex,thick] (remTrans1) edge[bend right] node[right] {} (place2);
-        \draw[-latex,thick] (place2) edge[bend right] node[below left] {} (remTrans1);
-        \draw[-latex,thick] (place1) -- (trans3);
-        \draw[-latex,thick] (trans4) -- (out4);
-
-        % ================== Middle arrow ==================
-        \node (arrow) at (4,0) {\huge$\Rightarrow$};
-        %\node[text width=3.5cm] at (4, -2) {\textbf{where}\\$places(\varphi) = \{p_0\}$};
-
-        % ==================================================
-
-        % Left side places
-        \node[place,label=left:$p_0$] (rplace1) at (7,0) {};
-        %\node[place,label=right:$p_1$] (place2) at (8,0) {$\neg \varphi$};
-
-        % Left side transition
-        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=above:$t_0$] (rnegTrans1) at (6,2) {};
-        %\node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=above:$t_1$] (rremTrans1) at (8,2) {};
-        \node[transition,minimum height=6mm,minimum width=2mm,fill=black,label=below:$t_3$] (rtrans4) at (6,-2) {};
-
-        % Left side invisible nodes
-        \node (rnegIn1) at (5,2) {};
-        \node (rnegOut1) at (6,3) {};
-        %\node (rplaceIn1) at (5,0) {};
-        %\node (remIn1) at (1,-1) {};
-        %\node (remOut1) at (1,-3) {};
-        \node (rout4) at (5,-2) {};
-
-        % Left side arcs between transitions and nodes
-        \draw[-latex,thick] (rnegTrans1) edge node[left] {} (rplace1);
-        %\draw[-latex,thick] (place1) edge[bend right] node[right] {$w_3$} (negTrans1);
-        %\draw[-latex,thick] (place1) edge[bend right] node[left] {$w_1$} (remTrans1);
-        %\draw[-latex,thick] (rremTrans1) edge node[right] {} (rplace1);
-
-        % Left side arcs to/from invisible nodes
-        \draw[-latex,thick] (rnegIn1) -- (rnegTrans1);
-        %\draw[-latex,thick] (negTrans1) -- (negOut1);
-        \draw[-latex,thick] (rplace1) -- (rtrans4);
-        %\draw[-latex,thick] (place2) -- (trans3);
-        %\draw[-latex,thick] (remTrans1) -- (place2);
-        \draw[-latex,thick] (rtrans4) -- (rout4);
-    \end{tikzpicture}
-    \caption{Rule I: Irrelevant net sections}
-    \label{fig:rule_i}
-\end{figure}
+\begin{theorem}
+    Rule~I in Algorithm~\ref{algo:rule_i} is correct for reachability without deadlock.
+\end{theorem}
