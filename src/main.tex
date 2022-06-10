@@ -12,6 +12,7 @@
 \usepackage[ruled,vlined]{algorithm2e}
 \SetKwRepeat{Do}{do}{until}%
 \newtheorem{theorem}{Theorem}
+\usepackage{pdfpages}
 
 % Document
 \begin{document}
@@ -22,6 +23,7 @@
     \clearpage
     \input{rule_c.tex}
     \clearpage
+    \includepdf[pages=-,pagecommand={},width=\textwidth]{rule_d.pdf}
     \input{rule_e.tex}
     \clearpage
     \input{rule_f.tex}
